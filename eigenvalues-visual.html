@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>פתרון ערכים עצמיים — חזותי</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --ink:#16181d; --paper:#f6f4ee; --card:#fff; --line:#e4dfd2;
+  --a:#b5121b; --a-soft:#fbeceb; --b:#1f5673; --b-soft:#e9f1f5;
+  --g:#1f7a4d; --g-soft:#e7f3ec; --muted:#6b6657;
+  --purple:#6b4a8f; --purple-soft:#efe9f5;
+  --shadow:0 1px 2px rgba(0,0,0,.04),0 10px 30px rgba(0,0,0,.07);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Heebo","Segoe UI",system-ui,sans-serif;line-height:1.65;
+  -webkit-font-smoothing:antialiased;}
+.wrap{max-width:760px;margin:0 auto;padding:28px 18px 90px}
+.katex{font-size:1.05em}
+
+.head{text-align:center;margin-bottom:8px}
+.head .eye{font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--a);font-weight:700;direction:ltr}
+.head h1{font-size:25px;margin:8px 0 4px;font-weight:800;letter-spacing:-.4px}
+.head p{color:var(--muted);font-size:14px;margin:0}
+
+.matrix-hero{display:flex;justify-content:center;margin:22px 0 6px}
+.mtx{border-collapse:collapse;font-family:"SF Mono",ui-monospace,monospace;font-size:21px}
+.mtx td{width:54px;height:54px;text-align:center;vertical-align:middle;
+  border:2px solid transparent;transition:all .4s;border-radius:8px;direction:ltr}
+.mtx td.diag{background:var(--b-soft);color:var(--b);font-weight:800}
+.mtx td.off{background:#faf6ee;color:var(--a)}
+.bracket{font-size:62px;color:var(--ink);font-weight:200;line-height:1}
+
+/* progress dots */
+.dots{display:flex;justify-content:center;gap:9px;margin:18px 0 4px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--line);transition:all .35s}
+.dot.on{background:var(--a);transform:scale(1.25)}
+
+.stage{
+  background:var(--card);border:1px solid var(--line);border-radius:18px;
+  box-shadow:var(--shadow);padding:24px 22px;margin-top:14px;min-height:230px;
+  position:relative;overflow:hidden;
+}
+.step-tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;
+  background:var(--a-soft);color:var(--a);padding:5px 13px;border-radius:999px;
+  direction:ltr;margin-bottom:6px}
+.step-tag .n{background:var(--a);color:#fff;width:19px;height:19px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:11px}
+.stage h2{font-size:18px;margin:6px 0 12px;font-weight:800}
+.math-disp{margin:16px 0;overflow-x:auto;direction:ltr;text-align:center;padding:4px 0}
+.explain{background:var(--b-soft);border-right:4px solid var(--b);
+  padding:11px 15px;border-radius:0 10px 10px 0;font-size:14px;color:#27485a;margin:14px 0}
+.explain b{color:var(--b)}
+.frame{animation:pop .45s cubic-bezier(.2,.7,.3,1)}
+@keyframes pop{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* cofactor highlight chips */
+.cofa{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px 0}
+.minor{border:2px solid var(--line);border-radius:12px;padding:12px 14px;background:#fbfaf6;
+  text-align:center;min-width:150px}
+.minor .lbl{font-size:11px;color:var(--muted);font-weight:700;direction:ltr;margin-bottom:6px}
+.minor.b1{border-color:var(--b);background:var(--b-soft)}
+.minor.b2{border-color:var(--purple);background:var(--purple-soft)}
+
+/* factor split */
+.split{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.factor{flex:1;min-width:200px;border:2px solid var(--line);border-radius:14px;padding:14px;text-align:center;background:#fbfaf6}
+.factor.solved{border-color:var(--g);background:var(--g-soft)}
+.factor .ftitle{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:8px}
+.factor.solved .ftitle{color:var(--g)}
+.lam{display:inline-block;background:#fff;border:1px solid var(--g);color:var(--g);
+  font-weight:800;padding:5px 12px;border-radius:9px;margin:4px;direction:ltr;font-size:15px}
+
+/* variance bars */
+.bars{margin-top:8px}
+.barrow{display:flex;align-items:center;gap:12px;margin:11px 0;direction:ltr}
+.barlbl{width:78px;text-align:left;font-size:13px;font-weight:700;direction:ltr;flex:none}
+.bartrack{flex:1;height:30px;background:#efece3;border-radius:8px;overflow:hidden;position:relative}
+.barfill{height:100%;border-radius:8px;width:0;transition:width 1.1s cubic-bezier(.2,.7,.2,1);
+  display:flex;align-items:center;justify-content:flex-end;padding-inline-end:10px;
+  color:#fff;font-weight:800;font-size:13px;direction:ltr}
+.b-main{background:linear-gradient(90deg,#1f7a4d,#28a062)}
+.b-2{background:linear-gradient(90deg,#1f5673,#2b7194)}
+.b-3{background:linear-gradient(90deg,#9a8fb0,#6b4a8f)}
+.varnote{text-align:center;font-size:13px;color:var(--muted);margin-top:10px}
+.varnote b{color:var(--g);font-size:15px}
+
+.controls{display:flex;gap:10px;justify-content:center;margin-top:20px}
+.btn{border:none;border-radius:11px;padding:11px 22px;font-weight:700;font-size:14px;cursor:pointer;
+  font-family:inherit;transition:filter .15s,transform .1s}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--a);color:#fff}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{background:var(--card);color:var(--a);border:1.5px solid var(--a)}
+.btn:disabled{opacity:.4;cursor:default}
+
+.final-card{margin-top:16px;border:1.5px solid var(--g);background:var(--g-soft);
+  border-radius:14px;padding:16px 18px;text-align:center;display:none}
+.final-card.show{display:block;animation:pop .5s}
+.final-card .lams{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:8px 0}
+
+footer{text-align:center;color:var(--muted);font-size:12px;margin-top:26px}
+@media(max-width:520px){.mtx td{width:44px;height:44px;font-size:18px}.bracket{font-size:52px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="eye">Eigenvalues · step by step</div>
+    <h1>פתרון הערכים העצמיים</h1>
+    <p>מטריצת השונות מ-PCA — מהמטריצה עד אחוז השונות, בכל צעד</p>
+  </div>
+
+  <div class="matrix-hero">
+    <span class="bracket">(</span>
+    <table class="mtx" id="heroMtx">
+      <tr><td class="diag">2</td><td class="off">−1</td><td>0</td></tr>
+      <tr><td class="off">−1</td><td class="diag">2</td><td class="off">−1</td></tr>
+      <tr><td>0</td><td class="off">−1</td><td class="diag">2</td></tr>
+    </table>
+    <span class="bracket">)</span>
+  </div>
+
+  <div class="dots" id="dots"></div>
+  <div class="stage" id="stage"></div>
+
+  <div class="controls">
+    <button class="btn ghost" id="prev">→ הקודם</button>
+    <button class="btn primary" id="next">הצעד הבא ←</button>
+  </div>
+
+  <div class="final-card" id="finalCard">
+    <div style="font-weight:800;color:var(--g);font-size:15px">✓ שלושת הערכים העצמיים</div>
+    <div class="lams">
+      <span class="lam">λ₁ = 2+√2 ≈ 3.414</span>
+      <span class="lam">λ₂ = 2</span>
+      <span class="lam">λ₃ = 2−√2 ≈ 0.586</span>
+    </div>
+    <div style="font-size:13px;color:var(--muted)">סכום = 6 · הממד הראשי לוכד 56.9% מהשונות</div>
+  </div>
+
+  <footer>טיפ: אפשר לדפדף קדימה ואחורה בכל צעד · המספרים אומתו מול numpy</footer>
+</div>
+
+<script>
+const K=(t,d=true)=>{const s=document.createElement('span');
+  try{katex.render(t,s,{displayMode:d,throwOnError:false});}catch(e){s.textContent=t;}return s.outerHTML;};
+
+const steps=[
+{
+  tag:"המשוואה האופיינית",
+  h:"מציבים λ על האלכסון ומחפשים דטרמיננטה אפס",
+  body:()=>`
+    <div class="explain"><b>הרעיון:</b> ערך עצמי הוא λ שעבורו המטריצה <span dir="ltr">$COV-\\lambda I$</span> "מאבדת ממד" — כלומר הדטרמיננטה שלה מתאפסת. מחסירים λ מכל איבר באלכסון.</div>
+    <div class="math-disp">${K("|COV-\\lambda I| = \\begin{vmatrix}2-\\lambda&-1&0\\\\-1&2-\\lambda&-1\\\\0&-1&2-\\lambda\\end{vmatrix}=0")}</div>`
+},
+{
+  tag:"פיתוח לפי השורה הראשונה",
+  h:"שני מינורים — האמצעי מתאפס כי האיבר הוא 0",
+  body:()=>`
+    <div class="explain"><b>למה זה מתקצר:</b> מרחיבים לפי השורה העליונה <span dir="ltr">$[\\,2{-}\\lambda,\\ -1,\\ 0\\,]$</span>. האיבר השלישי הוא 0, אז נשארים רק עם שני מינורים.</div>
+    <div class="cofa">
+      <div class="minor b1"><div class="lbl">× (2−λ)</div>${K("\\begin{vmatrix}2-\\lambda&-1\\\\-1&2-\\lambda\\end{vmatrix}",false)}</div>
+      <div class="minor b2"><div class="lbl">× (+1)</div>${K("\\begin{vmatrix}-1&-1\\\\0&2-\\lambda\\end{vmatrix}",false)}</div>
+    </div>
+    <div class="math-disp">${K("(2-\\lambda)\\big[(2-\\lambda)^2-1\\big]+\\big[-(2-\\lambda)\\big]=0")}</div>`
+},
+{
+  tag:"הוצאת גורם משותף",
+  h:"לכל האיברים יש (2−λ) — מוציאים אותו החוצה",
+  body:()=>`
+    <div class="explain"><b>הצעד המפתח:</b> שני האיברים מתחלקים ב-<span dir="ltr">$(2-\\lambda)$</span>. מוציאים גורם משותף ומקבלים מכפלה של שני גורמים — וזה מה שפותר את המשוואה.</div>
+    <div class="math-disp">${K("(2-\\lambda)\\big[(2-\\lambda)^2-1-1\\big]=0")}</div>
+    <div class="math-disp">${K("(2-\\lambda)\\big[(2-\\lambda)^2-2\\big]=0")}</div>`
+},
+{
+  tag:"שני גורמים → שני מקרים",
+  h:"מכפלה = 0 כשאחד הגורמים מתאפס",
+  body:()=>`
+    <div class="split">
+      <div class="factor solved">
+        <div class="ftitle">גורם 1 — הקל</div>
+        ${K("2-\\lambda=0",false)}
+        <div><span class="lam">λ₂ = 2</span></div>
+      </div>
+      <div class="factor">
+        <div class="ftitle">גורם 2 — ריבועי</div>
+        ${K("(2-\\lambda)^2-2=0",false)}
+        <div style="font-size:12px;color:var(--muted);margin-top:6px">נפתח בצעד הבא →</div>
+      </div>
+    </div>`
+},
+{
+  tag:"פתרון הגורם הריבועי",
+  h:"שורש ריבועי משני הצדדים",
+  body:()=>`
+    <div class="explain"><b>פותחים:</b> <span dir="ltr">$(2-\\lambda)^2=2$</span> ⟵ מוציאים שורש, וזוכרים ±.</div>
+    <div class="math-disp">${K("(2-\\lambda)^2=2 \\;\\Rightarrow\\; 2-\\lambda=\\pm\\sqrt2 \\;\\Rightarrow\\; \\lambda=2\\mp\\sqrt2")}</div>
+    <div class="split">
+      <div class="factor solved"><div class="ftitle">החיובי</div><span class="lam">λ₁ = 2+√2 ≈ 3.414</span></div>
+      <div class="factor solved"><div class="ftitle">השלילי</div><span class="lam">λ₃ = 2−√2 ≈ 0.586</span></div>
+    </div>
+    <div class="explain" style="border-color:var(--muted)"><b>בדיקה:</b> בלוח הפתרונות כתוב <span dir="ltr">$(2-\\lambda)(\\lambda^2-4\\lambda+2)=0$</span> — זה בדיוק <span dir="ltr">$(2-\\lambda)^2-2$</span> בצורה פתוחה. הנוסחה הריבועית נותנת <span dir="ltr">$\\lambda=\\frac{4\\pm\\sqrt{8}}{2}=2\\pm\\sqrt2$</span>, אותם שורשים.</div>`
+},
+{
+  tag:"אחוז השונות",
+  h:"כל ערך עצמי = שונות בכיוון שלו",
+  body:()=>`
+    <div class="explain"><b>המשמעות:</b> כל λ מודד כמה "מידע" (שונות) יש בכיוון הראשי שלו. אחוז השונות הנשמר בממד = λ חלקי סכום כל ה-λ. הסכום כאן הוא 6.</div>
+    <div class="bars" id="bars">
+      <div class="barrow"><div class="barlbl">λ₁ 3.414</div><div class="bartrack"><div class="barfill b-main" data-w="56.9">56.9%</div></div></div>
+      <div class="barrow"><div class="barlbl">λ₂ 2.0</div><div class="bartrack"><div class="barfill b-2" data-w="33.3">33.3%</div></div></div>
+      <div class="barrow"><div class="barlbl">λ₃ 0.586</div><div class="bartrack"><div class="barfill b-3" data-w="9.8">9.8%</div></div></div>
+    </div>
+    <div class="varnote">דחיסה לממד אחד שומרת על <b>56.9%</b> מהשונות &nbsp;·&nbsp; ${K("\\frac{3.414}{3.414+2+0.586}=0.569",false)}</div>`
+}
+];
+
+let i=0;
+const stage=document.getElementById('stage');
+const dotsEl=document.getElementById('dots');
+steps.forEach((_,k)=>{const d=document.createElement('div');d.className='dot';dotsEl.appendChild(d);});
+
+function highlightHero(stepIdx){
+  // pulse diagonal on step 0, minors region on step 1
+  const mtx=document.getElementById('heroMtx');
+  mtx.querySelectorAll('td').forEach(td=>td.style.outline='none');
+}
+
+function draw(){
+  const s=steps[i];
+  stage.innerHTML=`<div class="frame">
+    <span class="step-tag"><span class="n">${i+1}</span> ${s.tag}</span>
+    <h2>${s.h}</h2>
+    ${s.body()}
+  </div>`;
+  [...dotsEl.children].forEach((d,k)=>d.classList.toggle('on',k===i));
+  document.getElementById('prev').disabled=(i===0);
+  document.getElementById('next').disabled=(i===steps.length-1);
+  document.getElementById('finalCard').classList.toggle('show',i===steps.length-1);
+  highlightHero(i);
+  // animate bars if present
+  const bars=stage.querySelectorAll('.barfill');
+  if(bars.length){requestAnimationFrame(()=>setTimeout(()=>{
+    bars.forEach(b=>b.style.width=b.dataset.w+'%');},80));}
+}
+document.getElementById('next').onclick=()=>{if(i<steps.length-1){i++;draw();}};
+document.getElementById('prev').onclick=()=>{if(i>0){i--;draw();}};
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowLeft'){if(i<steps.length-1){i++;draw();}}
+  if(e.key==='ArrowRight'){if(i>0){i--;draw();}}
+});
+draw();
+</script>
+</body>
+</html>
