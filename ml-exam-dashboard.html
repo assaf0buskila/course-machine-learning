@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>למידת מכונה — לוח פתרונות אינטראקטיבי</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --ink:#14171f;
+  --paper:#f7f5ef;
+  --card:#ffffff;
+  --line:#e2ddd0;
+  --line-strong:#cfc8b6;
+  --accent:#b5121b;      /* Shenkar red */
+  --accent-soft:#fbeceb;
+  --blue:#1f5673;
+  --blue-soft:#e9f1f5;
+  --good:#1f7a4d;
+  --good-soft:#e7f3ec;
+  --muted:#6b6657;
+  --shadow:0 1px 2px rgba(20,23,31,.04),0 8px 24px rgba(20,23,31,.06);
+  --mono:"SF Mono",ui-monospace,"Cascadia Code",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Heebo","Segoe UI",system-ui,-apple-system,sans-serif;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.katex{font-size:1.04em}
+.wrap{max-width:920px;margin:0 auto;padding:0 18px 120px}
+
+/* ---------- Header ---------- */
+header.top{
+  position:sticky;top:0;z-index:50;
+  background:rgba(247,245,239,.86);
+  backdrop-filter:saturate(140%) blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.top-inner{max-width:920px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:10px}
+.brand .mark{
+  width:30px;height:30px;border-radius:7px;background:var(--accent);
+  display:inline-flex;align-items:center;justify-content:center;color:#fff;
+  font-weight:800;font-size:13px;letter-spacing:.5px;flex:none;
+  transform:translateY(4px);
+}
+.brand h1{font-size:17px;margin:0;font-weight:800;letter-spacing:-.2px}
+.brand .sub{font-size:12px;color:var(--muted);font-weight:500}
+.progress-pill{
+  margin-inline-start:auto;font-size:12px;color:var(--muted);
+  background:var(--card);border:1px solid var(--line);border-radius:999px;
+  padding:5px 12px;font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+.progress-pill b{color:var(--accent)}
+
+/* ---------- Hero ---------- */
+.hero{padding:34px 0 8px}
+.hero .eyebrow{
+  font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--accent);font-weight:700;direction:ltr;text-align:right;
+}
+.hero h2{font-size:30px;line-height:1.18;margin:8px 0 10px;font-weight:800;letter-spacing:-.5px}
+.hero p{color:var(--muted);font-size:15px;max-width:620px;margin:0}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:18px;font-size:12.5px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+
+/* ---------- Section nav ---------- */
+nav.tabs{
+  display:flex;gap:8px;flex-wrap:wrap;margin:26px 0 8px;
+  position:sticky;top:60px;z-index:40;
+  background:rgba(247,245,239,.92);backdrop-filter:blur(6px);
+  padding:8px 0;
+}
+.tab{
+  border:1px solid var(--line-strong);background:var(--card);
+  border-radius:9px;padding:7px 13px;font-size:13px;font-weight:600;
+  cursor:pointer;color:var(--ink);transition:all .15s;white-space:nowrap;
+}
+.tab:hover{border-color:var(--accent);color:var(--accent)}
+.tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* ---------- Problem card ---------- */
+.problem{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;
+  box-shadow:var(--shadow);margin:18px 0;overflow:hidden;
+}
+.p-head{
+  padding:18px 20px;cursor:pointer;display:flex;align-items:flex-start;gap:14px;
+  border-bottom:1px solid transparent;transition:border-color .2s;
+}
+.problem.open .p-head{border-bottom-color:var(--line)}
+.p-num{
+  flex:none;width:42px;height:42px;border-radius:10px;
+  background:var(--accent-soft);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:14px;direction:ltr;
+}
+.p-titles{flex:1;min-width:0}
+.p-titles h3{margin:0;font-size:16.5px;font-weight:700}
+.p-titles .meta{font-size:12.5px;color:var(--muted);margin-top:3px;direction:ltr;text-align:right}
+.p-titles .tags{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+.tagchip{font-size:11px;font-weight:600;padding:3px 9px;border-radius:6px;direction:ltr;
+  background:var(--blue-soft);color:var(--blue);border:1px solid #d6e4eb}
+.chev{flex:none;color:var(--muted);transition:transform .2s;margin-top:6px}
+.problem.open .chev{transform:rotate(180deg)}
+
+.p-body{display:none;padding:4px 20px 22px}
+.problem.open .p-body{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+
+/* ---------- Givens block ---------- */
+.given{
+  background:#fbfaf6;border:1px solid var(--line);border-radius:11px;
+  padding:14px 16px;margin:14px 0;
+}
+.given .lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:6px;direction:ltr;text-align:right}
+
+/* ---------- Step ---------- */
+.steps{margin-top:6px}
+.step{
+  border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden;
+  background:var(--card);
+}
+.step-head{
+  padding:12px 15px;display:flex;align-items:center;gap:12px;cursor:pointer;
+  user-select:none;transition:background .15s;
+}
+.step-head:hover{background:#fbfaf6}
+.step-n{
+  flex:none;width:26px;height:26px;border-radius:7px;background:var(--blue-soft);
+  color:var(--blue);font-weight:800;font-size:12.5px;
+  display:flex;align-items:center;justify-content:center;direction:ltr;
+}
+.step.done .step-n{background:var(--good-soft);color:var(--good)}
+.step-title{flex:1;font-weight:600;font-size:14.5px}
+.step-toggle{
+  font-size:12px;font-weight:700;color:var(--accent);flex:none;
+  border:1px solid var(--accent-soft);background:var(--accent-soft);
+  padding:4px 11px;border-radius:7px;transition:all .15s;
+}
+.step.open .step-toggle{background:var(--accent);color:#fff;border-color:var(--accent)}
+.step-body{
+  display:none;padding:2px 16px 16px;border-top:1px dashed var(--line);
+  margin-top:2px;
+}
+.step.open .step-body{display:block;animation:fade .2s ease}
+.step-body .why{
+  background:var(--blue-soft);border-right:3px solid var(--blue);
+  padding:9px 13px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13.5px;color:#284a5c;
+}
+.step-body .math-line{margin:10px 0;overflow-x:auto;direction:ltr;text-align:right;padding-bottom:2px}
+.step-body p{font-size:14px;margin:8px 0}
+.result-flag{
+  display:inline-flex;align-items:center;gap:7px;background:var(--good-soft);
+  color:var(--good);font-weight:700;padding:8px 13px;border-radius:9px;
+  font-size:14px;margin-top:6px;border:1px solid #cde8d8;
+}
+
+/* ---------- Tables ---------- */
+.tbl-scroll{overflow-x:auto;margin:12px 0}
+table.data{border-collapse:collapse;font-size:13px;width:100%;min-width:340px;direction:ltr}
+table.data th,table.data td{border:1px solid var(--line-strong);padding:6px 10px;text-align:center;white-space:nowrap}
+table.data th{background:#f0ece1;font-weight:700;font-size:12px}
+table.data td.hl{background:#fff6d6}
+table.data td.gd{background:var(--good-soft);font-weight:700;color:var(--good)}
+table.data tr:nth-child(even) td{background:#faf9f5}
+table.data tr:nth-child(even) td.hl{background:#fff6d6}
+table.data tr:nth-child(even) td.gd{background:var(--good-soft)}
+table.data caption{font-size:12px;color:var(--muted);margin-bottom:6px;direction:rtl}
+
+/* ---------- Interactive calc ---------- */
+.calc{
+  background:linear-gradient(180deg,#fbfaf6,#fff);border:1px solid var(--line-strong);
+  border-radius:12px;padding:15px 16px;margin:14px 0;
+}
+.calc .lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:10px;direction:ltr;text-align:right}
+.calc-row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:12px;color:var(--muted);font-weight:600;direction:ltr;text-align:right}
+.field input{
+  width:84px;padding:7px 9px;border:1px solid var(--line-strong);border-radius:8px;
+  font-family:var(--mono);font-size:14px;text-align:center;background:#fff;
+}
+.field input:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+.calc-out{
+  margin-top:12px;padding:11px 13px;background:var(--card);border:1px solid var(--line);
+  border-radius:9px;font-size:14px;direction:ltr;text-align:right;min-height:20px;
+}
+.calc-out .res{color:var(--good);font-weight:800}
+.btn{
+  border:none;background:var(--accent);color:#fff;font-weight:700;font-size:13px;
+  padding:8px 16px;border-radius:9px;cursor:pointer;transition:filter .15s;
+}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:var(--card);color:var(--accent);border:1px solid var(--accent)}
+
+/* reveal-all bar */
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 2px}
+.mini{font-size:12.5px;font-weight:600;color:var(--blue);background:var(--blue-soft);
+  border:1px solid #d6e4eb;border-radius:8px;padding:6px 12px;cursor:pointer;transition:all .15s}
+.mini:hover{background:var(--blue);color:#fff}
+
+.note{font-size:13px;color:var(--muted);background:#fbfaf6;border:1px dashed var(--line-strong);
+  border-radius:9px;padding:10px 13px;margin:10px 0}
+.note b{color:var(--ink)}
+
+footer{max-width:920px;margin:0 auto;padding:30px 18px;color:var(--muted);font-size:12.5px;text-align:center;border-top:1px solid var(--line)}
+.kbd{font-family:var(--mono);background:#efece3;border:1px solid var(--line-strong);border-radius:5px;padding:1px 6px;font-size:11.5px}
+.hidden{display:none!important}
+
+@media (max-width:560px){
+  .hero h2{font-size:24px}
+  .field input{width:72px}
+  nav.tabs{top:56px}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <span class="mark">ML</span>
+      <div>
+        <h1>למידת מכונה וכריית מידע</h1>
+        <div class="sub">3100191 · Shenkar · לוח פתרונות אינטראקטיבי</div>
+      </div>
+    </div>
+    <div class="progress-pill">צעדים שנפתחו: <b id="progCount">0</b> / <span id="progTotal">0</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <div class="eyebrow">Step-by-step · learn the why</div>
+    <h2>כל שאלה, צעד אחר צעד —<br>עם הנוסחה, החישוב וההסבר.</h2>
+    <p>המבחן המלא (מועד א' 2026) וכל שלושת דפי התרגול. כל צעד נפתח בנפרד כדי שתבין <em>למה</em> עושים אותו, לא רק מהי התוצאה. חלק מהשאלות כוללות מחשבון חי — שנה ערכים וראה איך התשובה משתנה.</p>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--blue)"></i> הסבר "למה"</span>
+      <span><i class="dot" style="background:var(--good)"></i> תוצאה סופית</span>
+      <span><i class="dot" style="background:var(--accent)"></i> מחשבון אינטראקטיבי</span>
+    </div>
+  </section>
+
+  <nav class="tabs" id="tabs"></nav>
+
+  <main id="content"></main>
+</div>
+
+<footer>
+  נבנה מתוך דף הנוסחאות ופתרונות הקורס · טיפ: לחץ על כותרת שאלה כדי לפתוח, ועל כל צעד כדי לחשוף את ההסבר.<br>
+  המחשבונים מבוססים על אותן נוסחאות מדף העזר — אפשר לשנות קלט ולבדוק את עצמך.
+</footer>
+
+<script>
+/* ============================================================
+   ML Exam Dashboard — content model
+   Each section -> problems[] -> steps[]
+   step: { title, why, math:[latex...], html, result, table }
+   Some problems carry an interactive calc (calc key -> app.js)
+   ============================================================ */
+window.SECTIONS = [
+{
+  id:"exam",
+  label:"מבחן מועד א׳ 2026",
+  blurb:"4 שאלות פתוחות · נתוני שימוש באפליקציה · חיזוי רמת מעורבות (Low/Medium/High)",
+  problems:[
+
+  /* ============ Q1 ============ */
+  {
+    num:"Q1", pts:20,
+    title:"נרמול Min-Max + סיווג KNN משוקלל",
+    meta:"Min-Max normalization · weighted KNN · L∞",
+    tags:["Normalization","KNN","L∞","Weighted voting"],
+    given:`מנרמלים את העמודות <b>Sessions</b> ו-<b>ActiveDays</b> בנרמול Min-Max, ואז מסווגים את הווקטור
+      <span dir="ltr">(Session=6, ActiveDays=4)</span> בעזרת KNN עם <span dir="ltr">K=3</span>,
+      מטריקת מרחק <span dir="ltr">L∞</span> ומשקלי תצפיות <span dir="ltr">$w_i=\\sqrt{d_i^3}$</span>.`,
+    steps:[
+      {
+        title:"נוסחת הנרמול (Min-Max)",
+        why:"נרמול מביא את כל העמודות לסקאלה אחידה [0,1], כדי שעמודה עם ערכים גדולים (כמו ActiveDays) לא תשתלט על חישוב המרחק.",
+        math:["x' = \\frac{x-\\min(X)}{\\max(X)-\\min(X)}"],
+        html:`עבור <b>ActiveDays</b>: min=4, max=20 ⟶ $x'=\\dfrac{x-4}{16}$.<br>
+              עבור <b>Sessions</b>: min=1, max=6 ⟶ $x'=\\dfrac{x-1}{5}$.`
+      },
+      {
+        title:"העמודות אחרי הנרמול",
+        why:"מציבים כל ערך בנוסחה. שים לב: הערך הקטן ביותר הופך ל-0 והגדול ביותר ל-1.",
+        table:{
+          dir:"ltr",
+          head:["#","Sessions","→ norm","ActiveDays","→ norm","Target"],
+          rows:[
+            ["1","2","0.2","6","0.125","Low"],
+            ["2","3","0.4","8","0.25","Low"],
+            ["3","6","1.0","18","0.875","High"],
+            ["4","5","0.8","16","0.75","High"],
+            ["5","4","0.6","11","0.4375","Medium"],
+            ["6","4","0.6","13","0.5625","Medium"],
+            ["7","1","0.0","4","0.0","Low"],
+            ["8","6","1.0","20","1.0","High"],
+            ["9","5","0.8","14","0.625","Medium"],
+            ["10","3","0.4","10","0.375","Medium"]
+          ]
+        }
+      },
+      {
+        title:"נרמול וקטור השאילתה",
+        why:"הווקטור החדש חייב לעבור בדיוק את אותו נרמול לפני שמשווים אותו לתצפיות.",
+        math:[
+          "\\text{Sessions: } \\frac{6-1}{5}=1",
+          "\\text{ActiveDays: } \\frac{4-4}{16}=0"
+        ],
+        html:`וקטור השאילתה המנורמל: <span dir="ltr">$(1,\\;0)$</span>.`
+      },
+      {
+        title:"מרחק L∞ לכל תצפית",
+        why:"L∞ (Chebyshev) = ההפרש המוחלט הגדול ביותר על פני הצירים: $d=\\max_i|x_i-y_i|$. לוקחים רק את הציר ה'גרוע ביותר'.",
+        calc:"q1_linf",
+        math:["d_{L\\infty}(x,y)=\\max\\big(|s_x-s_y|,\\;|a_x-a_y|\\big)"],
+        html:`לדוגמה מול שורה 1 — <span dir="ltr">$(0.2,0.125)$</span>:
+          <span dir="ltr">$\\max(|1-0.2|,|0-0.125|)=\\max(0.8,0.125)=0.8$</span>.`
+      },
+      {
+        title:"שלושת השכנים הקרובים (K=3)",
+        why:"בוחרים את 3 התצפיות עם המרחק הקטן ביותר. השורות 3 ו-8 הן תצפיות High שקרובות לשאילתה אחרי הנרמול.",
+        table:{
+          dir:"ltr",
+          head:["Neighbor","L∞","Target","wᵢ = √(dᵢ³)"],
+          rows:[
+            ["row 3","0.125","High","0.044"],
+            ["row 8","0.0","High","0.0 → ∞ weight"],
+            ["row 4","0.25","High","0.125"]
+          ]
+        },
+        html:`שלושת הקרובים ביותר הם High. לכן גם אם בודקים את כיוון פונקציית המשקל <span dir="ltr">$w_i=\\sqrt{d_i^3}$</span>, ההצבעה עדיין נשארת באותה מחלקה.`
+      },
+      {
+        title:"הצבעה משוקללת → התוצאה",
+        why:"כל שלושת השכנים הקרובים שייכים ל-High, ולכן גם הצבעה רגילה וגם הצבעה משוקללת נותנות את אותה מחלקה.",
+        result:"הסיווג שמתקבל: High",
+        html:`לפי הפתרון הרשמי מתקבל הסיווג <b>High</b>.`
+      }
+    ]
+  },
+
+  /* ============ Q2 ============ */
+  {
+    num:"Q2", pts:20,
+    title:"אשכול היררכי (Complete-Link) + KNN משוקלל מאפיינים",
+    meta:"Hierarchical clustering · complete-link · one-hot · weighted-feature KNN",
+    tags:["Clustering","Complete-link","One-hot","L1","KNN"],
+    given:`עובדים עם העמודות <b>Type, Device, Time</b>.
+      <br>(א) שורות 1–5: אשכול היררכי עם <span dir="ltr">L1</span> וחיבור <span dir="ltr">complete-link</span>, פלט של שני אשכולות.
+      <br>(ב) שורות 1–3: סיווג הווקטור <span dir="ltr">Type=Free, Device=Mobile, Time=11.6</span> ב-KNN עם <span dir="ltr">K=1</span> ומשקלי מאפיינים <span dir="ltr">Free=2, Desktop=1, Time=3</span>.`,
+    steps:[
+      {
+        title:"קידוד One-Hot למשתנים קטגוריאליים",
+        why:"מרחק מספרי דורש מספרים. כל קטגוריה הופכת לעמודת 0/1 — כך 'Free' ו-'Premium' מקבלים מרחק מוגדר.",
+        table:{
+          dir:"ltr",
+          head:["#","TypeFree","TypePrem","DevMobile","DevDesktop","Time"],
+          rows:[
+            ["1","1","0","1","0","4.5"],
+            ["2","1","0","0","1","6.2"],
+            ["3","0","1","1","0","12.1"],
+            ["4","0","1","0","1","10.4"],
+            ["5","1","0","1","0","7.8"]
+          ]
+        }
+      },
+      {
+        title:"מטריצת מרחקים L1 (Manhattan)",
+        why:"L1 = סכום ההפרשים המוחלטים על כל הצירים. לקטגוריאליים זה 0/2 (זהה/שונה), ומוסיפים את הפרש ה-Time.",
+        calc:"q2_l1",
+        math:["L_1(x,y)=\\sum_i |x_i-y_i|"],
+        html:`דוגמה: <span dir="ltr">$L_1(1,2)=|1-1|+|0-0|+|1-0|+|0-1|+|4.5-6.2|=3.7$</span>`,
+        table:{
+          dir:"ltr",
+          head:["","1","2","3","4","5"],
+          rows:[
+            ["1","–","","","",""],
+            ["2","3.7","–","","",""],
+            ["3","9.6","9.9","–","",""],
+            ["4","9.9","6.2","3.7","–",""],
+            ["5","3.3","3.6","6.3","6.6","–"]
+          ]
+        }
+      },
+      {
+        title:"איחוד אשכולות — complete-link",
+        why:"Complete-link מודד את המרחק בין אשכולות לפי הזוג הרחוק ביותר ביניהם (max). בכל שלב מאחדים את הזוג עם המרחק הקטן ביותר.",
+        math:["d(C_i,C_j)=\\max\\{d(x_i,x_j)\\}"],
+        html:`<b>שלב 1:</b> המרחק הקטן ביותר הוא 3.3 → מאחדים 1 ו-5 ⟶ <span dir="ltr">{1,5},{2},{3},{4}</span><br>
+              <b>שלב 2:</b> 3.7 בין 3 ו-4 → <span dir="ltr">{1,5},{2},{3,4}</span><br>
+              <b>שלב 3:</b> מצרפים 2 לאשכול {1,5} ⟶ הפלט הסופי:`,
+        result:"שני אשכולות: {1,2,5} ו-{3,4}"
+      },
+      {
+        title:"(ב) KNN משוקלל מאפיינים — מטריצת M",
+        why:"משקלי מאפיינים נכנסים כמטריצה אלכסונית M בתוך המרחק $D=\\sqrt{(X-Y)M(X-Y)^T}$. משקל גבוה = המאפיין משפיע יותר.",
+        math:["M=\\operatorname{diag}(2,0,0,1,3)"],
+        html:`רק TypeFree (משקל 2), DeviceDesktop (1), ו-Time (3) מקבלים משקל; השאר 0. הווקטור: <span dir="ltr">$(1,0,1,0,11.6)$</span>.`
+      },
+      {
+        title:"חישוב המרחקים המשוקללים",
+        why:"מציבים בנוסחה לכל אחת מ-3 השורות. K=1 ⟶ נבחר רק השכן הקרוב ביותר.",
+        calc:"q2_mahal",
+        math:[
+          "d_1=\\sqrt{3\\cdot 7.1^2}=12.298",
+          "d_2=9.406",
+          "d_3=2.135"
+        ],
+        html:`השכן הקרוב ביותר הוא שורה 3 (מרחק 2.135), והיא <b>High</b>.`,
+        result:"K=1 → הסיווג: High"
+      }
+    ]
+  }
+  ]
+}
+];
+
+/* ---- Append Q3 & Q4 to the exam section ---- */
+(function(){
+var exam = window.SECTIONS[0].problems;
+
+/* ============ Q3 ============ */
+exam.push({
+  num:"Q3", pts:25,
+  title:"ID3 — בחירת מאפיין שורש + PCA (אחוז שונות)",
+  meta:"Information Gain · entropy · multi-way vs binary split · eigen-decomposition",
+  tags:["ID3","Entropy","Info Gain","PCA","Eigenvalues"],
+  given:`(א) הרצת ID3 על Device, Time — איזה מאפיין יושב בשורש אחרי האיטרציה הראשונה?
+    קטגוריאלי → multi-way split; נומרי → binary split סביב הממוצע.
+    <br>(ב) נתונה מטריצת השונות המשותפת — כמה מאפיינים מקוריים היו, ומהו אחוז השונות שנשמר בממד אחד?`,
+  steps:[
+    {
+      title:"אנטרופיה התחלתית של Target",
+      why:"אנטרופיה מודדת אי-ודאות. ב-Target יש 3 Low, 4 Medium, 3 High (מתוך 10), לכן ההתפלגות היא 0.3 / 0.4 / 0.3.",
+      math:["H(X)=-\\sum_i p_i\\log_2 p_i",
+            "H(Target)=-(0.3\\log0.3+0.4\\log0.4+0.3\\log0.3)=1.571"]
+    },
+    {
+      title:"Information Gain עבור Device",
+      why:"Device קטגוריאלי → מפצלים multi-way (Mobile / Desktop). ה-IG = אנטרופיה לפני פחות האנטרופיה המשוקללת אחרי.",
+      math:[
+        "H_{Mobile}=-\\big(\\tfrac16\\log\\tfrac16+\\tfrac16\\log\\tfrac16+\\tfrac46\\log\\tfrac46\\big)=1.25",
+        "H_{Desktop}=-(0.5\\log0.5+0.5\\log0.5)=1",
+        "IG(Device)=1.571-\\big(\\tfrac{6}{10}\\cdot1.25+\\tfrac{4}{10}\\cdot1\\big)=0.421"
+      ]
+    },
+    {
+      title:"Information Gain עבור Time (binary, סביב הממוצע)",
+      why:"Time נומרי → binary split. ערך הפיצול הוא הממוצע (7.98). מחשבים אנטרופיה לכל צד.",
+      math:[
+        "\\text{split @ } \\bar{t}=7.98",
+        "H_{\\le}=H_{>}=-(0.6\\log0.6+0.4\\log0.4)=0.971",
+        "IG(Time)=1.571-\\big(\\tfrac{5}{10}\\cdot0.971+\\tfrac{5}{10}\\cdot0.971\\big)=0.6"
+      ]
+    },
+    {
+      title:"השוואה → מאפיין השורש",
+      why:"בוחרים את המאפיין עם ה-IG הגבוה ביותר — הוא מפריד הכי טוב בין המחלקות.",
+      html:`<span dir="ltr">$IG(Time)=0.6 > IG(Device)=0.421$</span>`,
+      result:"Time יושב בשורש העץ"
+    },
+    {
+      title:"(ב) PCA — מציאת ערכים עצמיים",
+      why:"מספר הממדים = גודל המטריצה (3×3 ⟹ 3 מאפיינים מקוריים). פותרים $|COV-\\lambda I|=0$.",
+      calc:"q3_eig",
+      math:[
+        "COV=\\begin{pmatrix}2&-1&0\\\\-1&2&-1\\\\0&-1&2\\end{pmatrix}",
+        "(2-\\lambda)(\\lambda^2-4\\lambda+2)=0",
+        "\\lambda_1=3.414,\\;\\lambda_2=2,\\;\\lambda_3=0.586"
+      ]
+    },
+    {
+      title:"אחוז השונות בממד אחד",
+      why:"כל ערך עצמי = כמות השונות בכיוון שלו. אחוז השונות הנשמר = הערך העצמי הגדול ביותר חלקי הסכום.",
+      math:["\\frac{3.414}{3.414+2+0.586}=0.569"],
+      result:"3 מאפיינים מקוריים · 56.9% שונות בממד אחד"
+    }
+  ]
+});
+
+/* ============ Q4 ============ */
+exam.push({
+  num:"Q4", pts:30,
+  title:"תקינות נרמול ופונקציות משקל",
+  meta:"normalization validity · monotonic weight functions · proof by order-preservation",
+  tags:["Normalization","Weight function","Monotonicity","Proof"],
+  given:`(א) נרמול $\\frac{x_i-\\min(X)}{1-x_i}$ — האם תקין לאלגוריתם למידה?
+    <br>(ב) פונקציית משקל $w_i=e^{d_i}$ — האם תקינה? ($d_i$ = מרחק אוקלידי בין תצפיות).
+    <br>(ג) חזרה על (ב) עם $w_i=2^{-d_i}$.`,
+  steps:[
+    {
+      title:"(א) תנאי התקינות לנרמול",
+      why:"נרמול תקין חייב לשמר סדר: אם $x_i\\le x_j$ אז גם הערכים המנורמלים חייבים לקיים את אותו אי-שוויון. אחרת המבנה של הנתונים נשבר.",
+      math:["x_i\\le x_j \\;\\Rightarrow\\; x_i-\\min(X)\\le x_j-\\min(X)"],
+      html:`המונה שומר סדר. הבעיה היא <b>המכנה</b> $1-x_i$ — הוא תלוי ב-$x_i$ עצמו ולא קבוע.`
+    },
+    {
+      title:"(א) למה זה לא תקין",
+      why:"המכנה $1-x_i$ משתנה מערך לערך, ואי אפשר לדעת אם הוא חיובי או שלילי. חלוקה בסימן לא ידוע יכולה להפוך את כיוון אי-השוויון.",
+      result:"לא תקין — הסדר בין הערכים עלול להתהפך",
+      html:`כיוון שלא ידוע סימן $1-x_i$, לא ניתן להבטיח שהיחס נשמר. <b>הנרמול אינו תקין.</b>`
+    },
+    {
+      title:"(ב) תנאי לפונקציית משקל תקינה",
+      why:"משקל תקין נותן ערך גבוה יותר לתצפית קרובה יותר. כלומר ככל שהמרחק קטן — המשקל גדל (פונקציה יורדת ב-d).",
+      math:["d_i\\le d_j \\;\\Rightarrow\\; w_i \\ge w_j \\;(\\text{נדרש})"]
+    },
+    {
+      title:"(ב) בדיקת $w_i=e^{d_i}$",
+      why:"$e^{d}$ היא פונקציה עולה: מרחק גדול ⟹ משקל גדול. זה הפוך מהדרישה — תצפית רחוקה מקבלת יותר משקל.",
+      math:["d_i\\le d_j \\Rightarrow e^{d_i}\\le e^{d_j} \\Rightarrow w_i\\le w_j"],
+      result:"לא תקינה — הקרוב מקבל פחות משקל",
+    },
+    {
+      title:"(ג) בדיקת $w_i=2^{-d_i}$",
+      why:"המעריך השלילי הופך את הכיוון: מרחק גדול ⟹ מעריך שלילי גדול ⟹ ערך קטן. עכשיו הקרוב מקבל יותר משקל — בדיוק כנדרש.",
+      math:[
+        "d_i\\le d_j \\Rightarrow 2^{d_i}\\le 2^{d_j} \\Rightarrow \\frac{1}{2^{d_i}}\\ge\\frac{1}{2^{d_j}}"
+      ],
+      result:"תקינה ✓ — הקרוב מקבל משקל גבוה יותר",
+      calc:"q4_weight"
+    }
+  ]
+});
+})();
+
+/* ============================================================
+   PRACTICE SET 1 — Gradient Descent
+   ============================================================ */
+window.SECTIONS.push({
+  id:"gd",
+  label:"תרגול · Gradient Descent",
+  blurb:"3 תרגילים · עדכון משקלים לפי הגרדיאנט · MSE לרגרסיה לינארית",
+  problems:[
+    {
+      num:"GD·1", pts:null,
+      title:"GD על פונקציה במשתנה אחד",
+      meta:"f(x)=x²−4x+1 · x₀=5 · α=0.1 · 3 iterations",
+      tags:["Gradient Descent","1 variable"],
+      given:`$f(x)=x^2-4x+1$, נקודת התחלה $x=5$, קצב למידה $\\alpha=0.1$, להריץ 3 איטרציות.`,
+      steps:[
+        {
+          title:"הנגזרת + כלל העדכון",
+          why:"GD מתקדם בכיוון הגרדיאנט השלילי. בכל צעד מזיזים את המשקל נגד הגרדיאנט בקצב α.",
+          math:["\\frac{\\partial f}{\\partial x}=2x-4",
+                "x \\leftarrow x-\\alpha\\cdot\\frac{\\partial f}{\\partial x}"]
+        },
+        {
+          title:"3 האיטרציות",
+          why:"מציבים את x הנוכחי בנגזרת, מכפילים ב-α, ומחסרים. כל פעם x מתקרב למינימום (x=2).",
+          calc:"gd1",
+          math:[
+            "x_1=5-0.1(2\\cdot5-4)=4.4",
+            "x_2=4.4-0.1(2\\cdot4.4-4)=3.92",
+            "x_3=3.92-0.1(2\\cdot3.92-4)=3.56"
+          ],
+          result:"אחרי 3 צעדים: x = 3.56"
+        }
+      ]
+    },
+    {
+      num:"GD·2", pts:null,
+      title:"GD על פונקציה בשני משתנים",
+      meta:"f(x,y)=3x²−3x+y² · start (1,2) · α=0.1 · 2 iterations",
+      tags:["Gradient Descent","2 variables","Partial derivatives"],
+      given:`$f(x,y)=3x^2-3x+y^2$, נקודת התחלה $(1,2)$, $\\alpha=0.1$, להריץ 3 איטרציות (מוצגות 2).`,
+      steps:[
+        {
+          title:"נגזרות חלקיות",
+          why:"בשני משתנים מעדכנים כל משתנה בנפרד לפי הנגזרת החלקית שלו — שניהם בו-זמנית.",
+          math:["\\frac{\\partial f}{\\partial x}=6x-3",
+                "\\frac{\\partial f}{\\partial y}=2y"]
+        },
+        {
+          title:"איטרציה 1",
+          why:"מציבים (1,2) בשתי הנגזרות ומעדכנים את x ו-y יחד.",
+          math:[
+            "x=1-0.1(6\\cdot1-3)=0.7",
+            "y=2-0.1(2\\cdot2)=1.6",
+            "(1,2)\\to(0.7,1.6)"
+          ]
+        },
+        {
+          title:"איטרציה 2",
+          why:"חוזרים על אותו תהליך מהנקודה החדשה (0.7, 1.6).",
+          calc:"gd2",
+          math:[
+            "x=0.7-0.1(6\\cdot0.7-3)=0.58",
+            "y=1.6-0.1(2\\cdot1.6)=1.28",
+            "(0.7,1.6)\\to(0.58,1.28)"
+          ],
+          result:"(1,2) → (0.7,1.6) → (0.58,1.28)"
+        }
+      ]
+    },
+    {
+      num:"GD·3", pts:null,
+      title:"רגרסיה לינארית עם GD ו-MSE",
+      meta:"fit y=ax+b · points (2,4),(5,2) · a=2,b=3 · α=0.1 · 1 iteration",
+      tags:["Linear regression","MSE","Gradient Descent"],
+      given:`מתאימים קו $y=ax+b$ בעזרת GD עם פונקציית מטרה MSE. נתונים: $(2,4),(5,2)$.
+        ערכי התחלה $a=2, b=3$, $\\alpha=0.1$, איטרציה אחת.`,
+      steps:[
+        {
+          title:"פונקציית המטרה MSE והנגזרות",
+          why:"גוזרים את ה-MSE לפי a ולפי b. שרשרת הגזירה מכניסה את $(-x)$ עבור a ואת $(-1)$ עבור b.",
+          math:[
+            "MSE=\\tfrac12\\sum_i\\big(y_i-(ax_i+b)\\big)^2",
+            "\\frac{\\partial}{\\partial a}=\\sum_i(y_i-ax_i-b)(-x_i)",
+            "\\frac{\\partial}{\\partial b}=\\sum_i(y_i-ax_i-b)(-1)"
+          ]
+        },
+        {
+          title:"עדכון a (איטרציה אחת)",
+          why:"מציבים את שתי הנקודות בנגזרת לפי a, סוכמים, ומעדכנים.",
+          math:[
+            "a=2-0.1\\big[(4-2\\cdot2-3)(-2)+(2-2\\cdot5-3)(-1)\\big]",
+            "a=2-0.1[\\,6+11\\,]=-4.1"
+          ]
+        },
+        {
+          title:"עדכון b + הקו המעודכן",
+          why:"אותו דבר עבור b עם הנגזרת $(-1)$. מתקבל קו חדש אחרי צעד אחד.",
+          math:["b=1.9","y=-4.1x+1.9"],
+          result:"הקו אחרי איטרציה: y = −4.1x + 1.9"
+        }
+      ]
+    }
+  ]
+});
+
+/* ============================================================
+   PRACTICE SET 2 — Dimensionality Reduction (PCA / t-SNE)
+   ============================================================ */
+window.SECTIONS.push({
+  id:"dim",
+  label:"תרגול · הפחתת ממדים",
+  blurb:"PCA מלא צעד-אחר-צעד · אחוז שונות · מיפוי t-SNE",
+  problems:[
+    {
+      num:"DIM·1", pts:null,
+      title:"PCA מלא — דחיסה ל-2 ממדים",
+      meta:"4 points in 3D · center → covariance → eigen → project",
+      tags:["PCA","Covariance","Eigenvalues","Eigenvectors","Projection"],
+      given:`נתונות 4 נקודות תלת-ממדיות (מסומנות No/Yes). מבצעים PCA לדחיסה ל-2 מאפיינים ומציגים על מערכת צירים חדשה.`,
+      steps:[
+        {
+          title:"שלב 1 — וקטור הממוצע",
+          why:"PCA מתחיל במרכוז: צריך את הממוצע של כל עמודה כדי להזיז את הענן לראשית הצירים.",
+          math:["\\mu=(6,5,6)"],
+          table:{dir:"ltr",head:["f₁","f₂","f₃","Target"],rows:[
+            ["2","4","10","No"],["6","4","6","No"],["6","8","6","Yes"],["10","4","2","Yes"]
+          ]}
+        },
+        {
+          title:"שלב 2 — מרכוז הנתונים",
+          why:"מחסרים את הממוצע מכל נקודה. עכשיו הענן ממורכז סביב 0, וכיוון השונות הופך חד-משמעי.",
+          math:[
+            "(2,4,10)-\\mu=(-4,-1,4)",
+            "(6,4,6)-\\mu=(0,-1,0)",
+            "(6,8,6)-\\mu=(0,3,0)",
+            "(10,4,2)-\\mu=(4,-1,-4)"
+          ]
+        },
+        {
+          title:"שלב 3 — מטריצת השונות המשותפת COV",
+          why:"COV מסכמת את המכפלות החיצוניות של הווקטורים הממורכזים, לאחר חלוקה ב-n. היא לוכדת איך הצירים משתנים יחד.",
+          math:[
+            "COV=\\frac14\\begin{pmatrix}32&0&-32\\\\0&12&0\\\\-32&0&32\\end{pmatrix}=\\begin{pmatrix}8&0&-8\\\\0&3&0\\\\-8&0&8\\end{pmatrix}"
+          ]
+        },
+        {
+          title:"שלב 4 — ערכים עצמיים",
+          why:"הערכים העצמיים = כמות השונות בכל כיוון ראשי. פותרים $|COV-\\lambda I|=0$.",
+          math:[
+            "(3-\\lambda)\\big[(8-\\lambda)^2-64\\big]=0",
+            "\\lambda_1=16,\\;\\lambda_2=3,\\;\\lambda_3=0"
+          ],
+          html:`3 ערכים עצמיים → בוחרים את 2 הגדולים (16 ו-3) לדחיסה ל-2 ממדים.`
+        },
+        {
+          title:"שלב 5 — וקטורים עצמיים",
+          why:"כל ערך עצמי נותן כיוון (וקטור עצמי) — זה הציר החדש שעליו מטילים. פותרים $(COV-\\lambda I)v=0$.",
+          math:[
+            "\\lambda=16:\\;v=(-1,0,1)",
+            "\\lambda=3:\\;v=(1.6,0,1)"
+          ]
+        },
+        {
+          title:"שלב 6 — היטל הנתונים (Projection)",
+          why:"מכפילים כל נקודה ממורכזת בכל וקטור עצמי → הקואורדינטות החדשות PC1, PC2.",
+          calc:"dim_proj",
+          table:{dir:"ltr",head:["PC1","PC2","Target"],rows:[
+            ["8","-2.4","No"],["0","0","No"],["0","0","Yes"],["-8","2.4","Yes"]
+          ]},
+          result:"הנתונים נדחסו ל-2 ממדים (PC1, PC2)"
+        }
+      ]
+    },
+    {
+      num:"DIM·2", pts:null,
+      title:"PCA — כמה רכיבים לשמירת 75% שונות",
+      meta:"λ₁=24, λ₂=2, λ₃=3 · variance ratio",
+      tags:["PCA","Variance ratio","Component selection"],
+      given:`ערכים עצמיים $\\lambda_1=24,\\;\\lambda_2=2,\\;\\lambda_3=3$. כמה רכיבים נדרשים לשמירת לפחות 75% מהשונות?`,
+      steps:[
+        {
+          title:"יחס השונות לכל רכיב",
+          why:"אחוז השונות של רכיב = הערך העצמי שלו חלקי סכום כל הערכים העצמיים (סה״כ 29).",
+          calc:"dim_var",
+          math:[
+            "r_1=\\tfrac{24}{29}=0.82",
+            "r_2=\\tfrac{2}{29}=0.06",
+            "r_3=\\tfrac{3}{29}=0.10"
+          ]
+        },
+        {
+          title:"בחירת מספר הרכיבים",
+          why:"מצרפים רכיבים מהגדול לקטן עד שעוברים את הסף. הרכיב הראשון לבדו נותן 82% > 75%.",
+          result:"רכיב אחד מספיק (82% ≥ 75%)"
+        }
+      ]
+    },
+    {
+      num:"DIM·3", pts:null,
+      title:"מיפוי t-SNE — דמיון מבוסס גאוסיאן",
+      meta:"4 points · g(d)=e^(−d²/2σ²) · σ=1 · L1,L2,L∞",
+      tags:["t-SNE","Similarity","Gaussian kernel"],
+      given:`נקודות: $x_1=(0,0),x_2=(1,0),x_3=(0,3),x_4=(2,2)$. פונקציה $g(d)=e^{-d^2/2\\sigma^2}$, $\\sigma=1$.
+        בודקים את מיפוי t-SNE עבור $x_1$ עם המטריקות $L_1,L_2,L_\\infty$.`,
+      steps:[
+        {
+          title:"רעיון הליבה של t-SNE",
+          why:"t-SNE הופך מרחקים לדמיונות עם גרעין גאוסיאני: נקודה קרובה ⟵ דמיון גבוה, נקודה רחוקה ⟵ דמיון שדועך מהר (אקספוננציאלית).",
+          math:["g(d)=e^{-d^2/2\\sigma^2}, \\quad \\sigma=1 \\Rightarrow g(d)=e^{-d^2/2}"]
+        },
+        {
+          title:"מרחקים מ-x₁ בכל מטריקה",
+          why:"כל מטריקה נותנת מרחק שונה. מציבים בכל אחת את ההפרשים בין x₁ לשאר הנקודות.",
+          calc:"tsne",
+          math:[
+            "L_1:\\; d_{12}=1,\\;d_{13}=3,\\;d_{14}=4",
+            "L_2:\\; d_{12}=1,\\;d_{13}=3,\\;d_{14}=2.83",
+            "L_\\infty:\\; d_{12}=1,\\;d_{13}=3,\\;d_{14}=2"
+          ]
+        },
+        {
+          title:"מהמרחק לדמיון",
+          why:"מכניסים כל מרחק לגרעין הגאוסיאני. שים לב איך הבחירה במטריקה משנה את הדמיון לנקודה x₄ (האלכסונית).",
+          html:`עבור $x_4$: ב-$L_2$ ⟵ $e^{-2.83^2/2}=e^{-4}$ ; ב-$L_\\infty$ ⟵ $e^{-2}$.
+            המטריקה משנה איזו נקודה נחשבת "שכנה".`,
+          result:"בחירת המטריקה משנה את מבנה השכנויות במיפוי"
+        }
+      ]
+    }
+  ]
+});
+
+/* ============================================================
+   PRACTICE SET 3 — Or Peretz: KNN + Decision Trees
+   ============================================================ */
+window.SECTIONS.push({
+  id:"trees",
+  label:"תרגול · KNN ועצי החלטה",
+  blurb:"KNN משוקלל · Information Gain · בניית עץ · דיוק · KNN משוקלל-מאפיינים",
+  problems:[
+    {
+      num:"T·1", pts:null,
+      title:"KNN + Information Gain + עץ החלטה + דיוק",
+      meta:"classify (1,0,1) · L1 · weighted KNN · IG on Feature 1 · accuracy",
+      tags:["KNN","L1","Weighted KNN","Info Gain","Decision tree","Accuracy"],
+      given:`טבלת אימון 6 שורות (Feature 1–3, Class P/N).
+        (א) סווג $(1,0,1)$ ב-KNN, K=3, מטריקת $L_1$ — ללא משקל ועם $w_i=1/d_i^2$.
+        (ב) חשב IG של Class בהינתן Feature 1 (פיצול חיובי/שלילי).
+        (ג) בנה עץ ברמה אחת. (ד) חשב דיוק.`,
+      steps:[
+        {
+          title:"(א) מרחקי L1 מהווקטור (1,0,1)",
+          why:"L1 = סכום ההפרשים המוחלטים. מחשבים מרחק לכל אחת מ-6 שורות האימון.",
+          calc:"t1_l1",
+          math:[
+            "L_1((1,0,1),(1,4,1))=0+4+0=4",
+            "L_1((1,0,1),(2,2,3))=1+2+2=5"
+          ],
+          table:{dir:"ltr",head:["Feat1","Feat2","Feat3","Class","dᵢ"],rows:[
+            ["1","4","1","P","4"],["2","2","3","P","5"],
+            ["1","1","0","P","2"],["1","1","1","N","1"],
+            ["-1","-1","1","N","3"],["-3","-4","0","N","9"]
+          ]}
+        },
+        {
+          title:"(א) KNN ללא משקל (K=3)",
+          why:"לוקחים 3 הקרובים: מרחקים 1(N), 2(P), 3(N). הצבעת רוב → 2 קולות N מול 1 קול P.",
+          result:"ללא משקל: הסיווג N"
+        },
+        {
+          title:"(א) KNN עם משקל wᵢ=1/dᵢ²",
+          why:"משקל מבוסס מרחק נותן לקרוב יותר השפעה חזקה. סוכמים את המשקלים לכל מחלקה.",
+          calc:"t1_weighted",
+          math:[
+            "w=\\frac{1}{d^2}:\\quad N:\\;\\tfrac{1}{1}+\\tfrac{1}{9}=1.11",
+            "P:\\;\\tfrac{1}{4}=0.25"
+          ],
+          result:"עם משקל: הסיווג N (1.11 > 0.25)"
+        },
+        {
+          title:"(ב) אנטרופיה התחלתית של Class",
+          why:"3 P ו-3 N מתוך 6 → התפלגות 0.5/0.5, האנטרופיה המקסימלית האפשרית.",
+          math:["H(Class)=-\\big(\\tfrac12\\log\\tfrac12+\\tfrac12\\log\\tfrac12\\big)=1"]
+        },
+        {
+          title:"(ב) Information Gain על Feature 1",
+          why:"מפצלים לפי סימן Feature 1. צד חיובי: 4 שורות (3P,1N); צד שלילי: 2 שורות (2N טהור → אנטרופיה 0).",
+          math:[
+            "H_{+}=-\\big(\\tfrac34\\log\\tfrac34+\\tfrac14\\log\\tfrac14\\big)=0.82",
+            "H_{F1}=\\tfrac46\\cdot0.82+\\tfrac26\\cdot0=0.546",
+            "IG=1-0.546=0.454"
+          ],
+          result:"IG(Feature 1) = 0.454"
+        },
+        {
+          title:"(ג) עץ ההחלטה ברמה אחת",
+          why:"Feature 1 בשורש. צד שלילי טהור → N. צד חיובי רוב P → P.",
+          html:`<div style="text-align:center;direction:ltr;font-family:var(--mono);font-size:13px;line-height:1.9">
+            [ Feature 1 ]<br>
+            &nbsp;&nbsp;↙ &nbsp;&nbsp; ↘<br>
+            (≤0) N &nbsp;&nbsp; (>0) P
+            </div>`
+        },
+        {
+          title:"(ד) דיוק העץ",
+          why:"מריצים את 6 התצפיות דרך העץ. שורה אחת (1,1,1 שהיא N) מסווגת בטעות כ-P. 5/6 נכונות.",
+          math:["\\text{Accuracy}=\\frac{5}{6}=83\\%"],
+          result:"דיוק = 83%"
+        }
+      ]
+    },
+    {
+      num:"T·2", pts:null,
+      title:"KNN משוקלל-מאפיינים (Knesset) + Information Gain",
+      meta:"classify (1,0,1) · D=√((X−Y)M(X−Y)ᵀ) · M=diag(1,2,3) · IG multi-way",
+      tags:["Weighted-feature KNN","Mahalanobis-style","Entropy","Info Gain"],
+      given:`חבר כנסת מסווג לפי 3 הצבעות → קואליציה (C) או אופוזיציה (O).
+        (א) סווג $(1,0,1)$ ב-KNN K=3 עם משקלי מאפיינים $v_1=1,v_2=2,v_3=3$.
+        (ב) אנטרופיה של Vote2, Vote3.
+        (ג) IG של Class בהינתן Vote3 (multi-way split).`,
+      steps:[
+        {
+          title:"(א) המרחק המשוקלל-מאפיינים",
+          why:"כל מאפיין מקבל משקל באלכסון M. מאפיין עם משקל גבוה תורם יותר למרחק — Vote3 (משקל 3) משפיע פי 3 מ-Vote1.",
+          math:["D(X,Y)=\\sqrt{(X-Y)\\,M\\,(X-Y)^T},\\quad M=\\operatorname{diag}(1,2,3)"]
+        },
+        {
+          title:"(א) חישוב המרחקים",
+          why:"מציבים כל שורה. שים לב: בכל איבר מכפילים את הריבוע במשקל המתאים לפני השורש.",
+          calc:"t2_weighted",
+          math:[
+            "(1,0,1)-(1,1,0)=(0,-1,1)\\Rightarrow\\sqrt{0+2\\cdot1+3\\cdot1}=\\sqrt5",
+            "(1,0,1)-(1,2,1)=(0,-2,0)\\Rightarrow\\sqrt{2\\cdot4}=\\sqrt8",
+            "(1,0,1)-(0,0,2)=(1,0,-1)\\Rightarrow\\sqrt{1+3}=\\sqrt4",
+            "(1,0,1)-(0,1,1)=(1,-1,0)\\Rightarrow\\sqrt{1+2}=\\sqrt3"
+          ],
+          html:`3 הקרובים: $\\sqrt3$ (O), $\\sqrt4$ (O), $\\sqrt5$ (C) → רוב O.`
+        },
+        {
+          title:"(ב) אנטרופיה של Vote2 / Vote3",
+          why:"Vote2 מתפלג 1×0, 2×1, 1×2 (כלומר 1/4, 1/2, 1/4). אותה התפלגות ל-Vote3 → אותה אנטרופיה.",
+          math:[
+            "H(V2)=-\\big(\\tfrac14\\log\\tfrac14+\\tfrac12\\log\\tfrac12+\\tfrac14\\log\\tfrac14\\big)=1.5",
+            "H(V2)=H(V3)"
+          ]
+        },
+        {
+          title:"(ג) IG של Class בהינתן Vote3",
+          why:"Vote3 מפצל multi-way לערכים 0/1/2. הקבוצות הטהורות (0→C, 2→O) תורמות אנטרופיה 0; רק ערך 1 מעורבב.",
+          math:[
+            "H(Class)=1",
+            "H_{V3}(Class)=\\tfrac14\\cdot0+\\tfrac12\\cdot1+\\tfrac14\\cdot0=\\tfrac12",
+            "IG=1-\\tfrac12=\\tfrac12"
+          ],
+          result:"IG(Vote3) = 0.5"
+        }
+      ]
+    }
+  ]
+});
+
+/* ============================================================
+   PRACTICE SET 4 — Gap-closing: formulas the course sheet has
+   but the practice never tested (Cosine, SSE, Single/Average
+   link, Multi-way vs Binary split)
+   ============================================================ */
+window.SECTIONS.push({
+  id:"gaps",
+  label:"השלמת חומר · נוסחאות שלא נבדקו",
+  blurb:"4 שאלות שמכסות בדיוק את מה שדף הנוסחאות כולל אך התרגול דילג עליו: דמיון קוסינוס · SSE · Single/Average link · Multi-way מול Binary split",
+  problems:[
+
+    /* ---- GAP 1: Cosine similarity ---- */
+    {
+      num:"G·1", pts:15,
+      title:"דמיון קוסינוס בין שני משתמשים",
+      meta:"cosine similarity · dot product · Euclidean norms",
+      tags:["Cosine similarity","Dot product","Norm"],
+      given:`מדף הנוסחאות הופיע <span dir="ltr">$\\cos(X,Y)=\\frac{X\\cdot Y}{\\lVert X\\rVert\\,\\lVert Y\\rVert}$</span> אך מעולם לא חושב.
+        נתונים שני משתמשים מטבלת המבחן לפי <span dir="ltr">(Sessions, Time, Clicks, ActiveDays)</span>:
+        <br>$X=(2,\\;4.5,\\;0.12,\\;6)$ ,  $Y=(6,\\;12.1,\\;0.42,\\;18)$.
+        <br>חשב את דמיון הקוסינוס ביניהם והסבר מה הוא אומר.`,
+      steps:[
+        {
+          title:"מהו דמיון קוסינוס — ולמה הוא שונה ממרחק",
+          why:"קוסינוס מודד את הזווית בין שני וקטורים, לא את הגודל שלהם. שני משתמשים עם אותו 'דפוס' התנהגות (יחס דומה בין הצירים) יהיו דומים — גם אם אחד פעיל הרבה יותר. זה בדיוק ההפך מ-L2 שמעניש על הבדל בגודל.",
+          math:["\\cos(X,Y)=\\frac{X\\cdot Y}{\\lVert X\\rVert\\,\\lVert Y\\rVert}",
+                "X\\cdot Y=\\sum_i x_i y_i, \\quad \\lVert X\\rVert=\\sqrt{\\textstyle\\sum_i x_i^2}"]
+        },
+        {
+          title:"שלב 1 — מכפלה סקלרית X·Y",
+          why:"כופלים איבר-איבר וסוכמים. זה ה'מונה' של הנוסחה — מודד כמה הווקטורים מצביעים לאותו כיוון.",
+          calc:"g_cos",
+          math:[
+            "X\\cdot Y = 2\\cdot6 + 4.5\\cdot12.1 + 0.12\\cdot0.42 + 6\\cdot18",
+            "= 12 + 54.45 + 0.05 + 108 = 174.5"
+          ]
+        },
+        {
+          title:"שלב 2 — הנורמות (אורכי הווקטורים)",
+          why:"כל נורמה היא האורך האוקלידי של הווקטור. הן ה'מכנה' שמנרמל — כך התוצאה תלויה רק בכיוון, לא בגודל.",
+          math:[
+            "\\lVert X\\rVert=\\sqrt{2^2+4.5^2+0.12^2+6^2}=\\sqrt{60.27}=7.763",
+            "\\lVert Y\\rVert=\\sqrt{6^2+12.1^2+0.42^2+18^2}=\\sqrt{506.59}=22.508"
+          ]
+        },
+        {
+          title:"שלב 3 — חישוב והסבר",
+          why:"מחלקים. תוצאה קרובה ל-1 = זווית קרובה ל-0° = שני המשתמשים בעלי אותו דפוס שימוש כמעט בדיוק, רק בעוצמות שונות (Y פעיל פי כמה מ-X).",
+          math:["\\cos(X,Y)=\\frac{174.5}{7.763\\cdot22.508}=0.9987"],
+          result:"cos ≈ 0.999 — דפוס שימוש כמעט זהה (זווית ~3°)"
+        }
+      ]
+    },
+
+    /* ---- GAP 2: SSE ---- */
+    {
+      num:"G·2", pts:15,
+      title:"חישוב SSE לאשכולות",
+      meta:"Sum of Squared Error · centroid · cluster cohesion",
+      tags:["SSE","Clustering","Centroid"],
+      given:`הנוסחה <span dir="ltr">$SSE=\\sum_{i=1}^{k}\\sum_{x\\in C_i}(c_i-x)^2$</span> מופיעה בדף אך לא חושבה.
+        נתונים שני אשכולות בדו-ממד:
+        <br>$C_1=\\{(2,4),(4,6)\\}$ ,  $C_2=\\{(10,2),(12,4)\\}$.
+        <br>חשב את ה-SSE הכולל.`,
+      steps:[
+        {
+          title:"מה SSE מודד",
+          why:"SSE = כמה 'מפוזרות' הנקודות סביב מרכז האשכול שלהן. ערך נמוך = אשכול צפוף וטוב. זה המדד שאלגוריתם K-Means מנסה למזער.",
+          math:["SSE=\\sum_{i=1}^{k}\\sum_{x\\in C_i}\\lVert c_i-x\\rVert^2"]
+        },
+        {
+          title:"שלב 1 — מרכזי האשכולות (centroids)",
+          why:"המרכז הוא הממוצע של נקודות האשכול. הוא הנקודה שממנה מודדים את הפיזור.",
+          math:[
+            "c_1=\\Big(\\tfrac{2+4}{2},\\tfrac{4+6}{2}\\Big)=(3,5)",
+            "c_2=\\Big(\\tfrac{10+12}{2},\\tfrac{2+4}{2}\\Big)=(11,3)"
+          ]
+        },
+        {
+          title:"שלב 2 — סכום ריבועי המרחקים בכל אשכול",
+          why:"לכל נקודה: מרחק לריבוע מהמרכז (סוכמים גם על ציר x וגם y). מסכמים בתוך כל אשכול.",
+          calc:"g_sse",
+          math:[
+            "C_1:\\;(3-2)^2+(5-4)^2+(3-4)^2+(5-6)^2 = 1+1+1+1 = 4",
+            "C_2:\\;(11-10)^2+(3-2)^2+(11-12)^2+(3-4)^2 = 4"
+          ]
+        },
+        {
+          title:"שלב 3 — SSE כולל",
+          why:"מחברים את התרומה של כל האשכולות. זה מספר אחד שמתאר את איכות החלוקה כולה.",
+          math:["SSE = 4 + 4 = 8"],
+          result:"SSE כולל = 8"
+        }
+      ]
+    },
+
+    /* ---- GAP 3: Single & Average link ---- */
+    {
+      num:"G·3", pts:20,
+      title:"Single link ו-Average link — על אותה מטריצה",
+      meta:"single link (min) · average link (avg) · contrast with complete-link",
+      tags:["Single link","Average link","Hierarchical","Linkage"],
+      given:`במבחן (שאלה 2) השתמשנו ב-<b>complete-link</b> בלבד. כאן נחזור על אותה מטריצת מרחקים
+        $L_1$ (שורות 1–5) ונבצע <b>single link</b> ו-<b>average link</b>, כדי לראות את ההבדל.`,
+      steps:[
+        {
+          title:"שלוש שיטות החיבור — התזכורת מדף הנוסחאות",
+          why:"כל שיטה מגדירה אחרת את 'המרחק בין שני אשכולות': single לוקח את הזוג הקרוב ביותר, complete את הרחוק ביותר, ו-average את הממוצע. אותה מטריצה יכולה לתת תהליך מיזוג שונה.",
+          math:[
+            "\\text{Single: } d(C_i,C_j)=\\min\\{d(x_i,x_j)\\}",
+            "\\text{Complete: } d(C_i,C_j)=\\max\\{d(x_i,x_j)\\}",
+            "\\text{Average: } d(C_i,C_j)=\\operatorname{avg}\\{d(x_i,x_j)\\}"
+          ],
+          table:{dir:"ltr",head:["","1","2","3","4","5"],rows:[
+            ["1","–","","","",""],["2","3.7","–","","",""],
+            ["3","9.6","9.9","–","",""],["4","9.9","6.2","3.7","–",""],
+            ["5","3.3","3.6","6.3","6.6","–"]
+          ]}
+        },
+        {
+          title:"Single link — שלב המיזוג הראשון",
+          why:"המרחק הקטן ביותר בכל המטריצה הוא 3.3 (בין 1 ל-5), אז מתחילים בדיוק כמו ב-complete. ההבדל יתחיל בשלב הבא.",
+          math:["\\min = 3.3 \\Rightarrow \\text{merge } \\{1,5\\}"]
+        },
+        {
+          title:"Single link — המרחק מ-{1,5} לשאר (min)",
+          why:"ב-single לוקחים לכל אשכול אחר את המרחק הקטן מבין שני האיברים. שים לב: 3.6 (ולא 3.7 כמו ב-complete) — וזה משנה את הסדר.",
+          calc:"g_link",
+          math:[
+            "d(\\{1,5\\},2)=\\min(3.7,3.6)=3.6",
+            "d(\\{1,5\\},3)=\\min(9.6,6.3)=6.3",
+            "d(\\{1,5\\},4)=\\min(9.9,6.6)=6.6"
+          ],
+          html:`עכשיו הקטן ביותר הוא 3.6 → מצרפים 2 לאשכול ⟶ <span dir="ltr">{1,2,5}</span>, ואז {3,4} ב-3.7.`
+        },
+        {
+          title:"Average link — אותו שלב, ממוצע במקום מינימום",
+          why:"ב-average ממצעים את שני המרחקים. הערכים יוצאים גבוהים יותר (3.65 במקום 3.6), אבל הסדר היחסי נשמר ⟶ אותה תוצאה סופית.",
+          math:[
+            "d(\\{1,5\\},2)=\\tfrac{3.7+3.6}{2}=3.65",
+            "d(\\{1,5\\},3)=\\tfrac{9.6+6.3}{2}=7.95",
+            "d(\\{1,5\\},4)=\\tfrac{9.9+6.6}{2}=8.25"
+          ]
+        },
+        {
+          title:"המסקנה — אותם אשכולות, מרחקי מיזוג שונים",
+          why:"זו הנקודה שהמרצה אוהב לבדוק: כל שלוש השיטות נותנות כאן {1,2,5} ו-{3,4}, אבל גובה המיזוג שונה (single 3.6, average 3.65, complete 3.7). על נתונים אחרים זה היה יכול לשנות גם את החלוקה עצמה.",
+          result:"כל השיטות → {1,2,5} ו-{3,4} · אך מרחקי מיזוג: 3.6 / 3.65 / 3.7"
+        }
+      ]
+    },
+
+    /* ---- GAP 4: Multi-way vs Binary split ---- */
+    {
+      num:"G·4", pts:15,
+      title:"Multi-way split מול Binary split",
+      meta:"conceptual · categorical vs numeric splits · tree shape",
+      tags:["Decision tree","Multi-way split","Binary split","Concept"],
+      given:`דף הנוסחאות מציג את הדיאגרמה של <b>Marital status</b> בשתי צורות פיצול — אך השאלה הזו
+        מעולם לא נשאלה ישירות. הסבר את ההבדל, מתי משתמשים בכל אחת, ותן דוגמה מנתוני המבחן.`,
+      steps:[
+        {
+          title:"Multi-way split — מה זה",
+          why:"בפיצול multi-way כל ערך קטגוריאלי מקבל ענף משלו. מתאים למשתנה קטגוריאלי עם מספר קטן של ערכים, כי הוא חושף מיד את כל הקבוצות.",
+          html:`<div style="text-align:center;direction:ltr;font-family:var(--mono);font-size:13px;line-height:1.8">
+            [ Marital status ]<br>↙ &nbsp; ↓ &nbsp; ↘<br>Single&nbsp; Married&nbsp; Divorced</div>`,
+          math:["\\text{ענף לכל קטגוריה: } |values|\\text{ ענפים}"]
+        },
+        {
+          title:"Binary split — מה זה",
+          why:"בפיצול binary תמיד שני ענפים בלבד: 'שייך לקבוצה' מול 'לא'. הכרחי למשתנים נומריים (סף כמו ≤7.98) וגם אופציה לקטגוריאליים (קיבוץ ערכים).",
+          html:`<div style="text-align:center;direction:ltr;font-family:var(--mono);font-size:13px;line-height:1.8">
+            [ Marital status ]<br>↙ &nbsp;&nbsp;&nbsp; ↘<br>{Single}&nbsp; {Married, Divorced}</div>`,
+          math:["\\text{תמיד 2 ענפים: } \\{A\\}\\ \\text{vs}\\ \\{\\text{rest}\\}"]
+        },
+        {
+          title:"מתי כל אחד — והקשר למבחן",
+          why:"זה בדיוק מה שעשינו בשאלה 3: Device (קטגוריאלי) פוצל multi-way ל-Mobile/Desktop, ואילו Time (נומרי) פוצל binary סביב הממוצע 7.98. אי אפשר multi-way על משתנה רציף — יהיו אינסוף ערכים.",
+          table:{dir:"ltr",head:["Split type","Variable","Branches","דוגמה במבחן"],rows:[
+            ["Multi-way","Categorical","one per value","Device → Mobile / Desktop"],
+            ["Binary","Numeric","2 (threshold)","Time → ≤7.98 / >7.98"]
+          ]}
+        },
+        {
+          title:"היתרון/חיסרון של כל גישה",
+          why:"Multi-way קצר וקריא אך עלול לפצל יתר על המידה (קבוצות קטנות, overfitting). Binary יוצר עצים עמוקים יותר אך גמיש ועקבי — לכן CART עובד תמיד binary.",
+          result:"קטגוריאלי קטן → multi-way · נומרי או קיבוץ → binary"
+        }
+      ]
+    }
+
+  ]
+});
+
+</script>
+<script>
+/* ============================================================
+   App: render sections, problems, steps; KaTeX; calculators
+   ============================================================ */
+(function(){
+const SECTIONS = window.SECTIONS;
+const content = document.getElementById('content');
+const tabsEl  = document.getElementById('tabs');
+let openedSteps = new Set();
+let totalSteps  = 0;
+
+/* ---------- helpers ---------- */
+function esc(s){return s==null?"":String(s);}
+function render(node){
+  if(window.renderMathInElement){
+    renderMathInElement(node,{
+      delimiters:[
+        {left:"$$",right:"$$",display:true},
+        {left:"$",right:"$",display:false},
+        {left:"\\(",right:"\\)",display:false},
+        {left:"\\[",right:"\\]",display:true}
+      ],
+      throwOnError:false
+    });
+  }
+}
+function katexBlock(tex){
+  const d=document.createElement('div');
+  d.className='math-line';
+  try{ katex.render(tex,d,{displayMode:true,throwOnError:false}); }
+  catch(e){ d.textContent=tex; }
+  return d;
+}
+
+/* ---------- build a table ---------- */
+function buildTable(t){
+  const wrap=document.createElement('div');wrap.className='tbl-scroll';
+  const tbl=document.createElement('table');tbl.className='data';
+  if(t.dir)tbl.setAttribute('dir',t.dir);
+  const thead=document.createElement('thead');
+  const htr=document.createElement('tr');
+  t.head.forEach(h=>{const th=document.createElement('th');th.textContent=h;htr.appendChild(th);});
+  thead.appendChild(htr);tbl.appendChild(thead);
+  const tb=document.createElement('tbody');
+  t.rows.forEach(r=>{
+    const tr=document.createElement('tr');
+    r.forEach((c,i)=>{
+      const td=document.createElement('td');
+      td.textContent=c;
+      // highlight result-ish columns
+      if(t.head[i]&&/PC|w|d|norm|D\(/.test(t.head[i])&&c!=="–"&&c!=="")td.classList.add('hl');
+      tr.appendChild(td);
+    });
+    tb.appendChild(tr);
+  });
+  tbl.appendChild(tb);wrap.appendChild(tbl);
+  return wrap;
+}
+
+/* ---------- build one step ---------- */
+function buildStep(step,gKey){
+  const el=document.createElement('div');el.className='step';
+  const sid=gKey;
+
+  const head=document.createElement('div');head.className='step-head';
+  head.innerHTML=`<span class="step-n">${step._n}</span>
+                  <span class="step-title">${step.title}</span>
+                  <span class="step-toggle">הצג</span>`;
+  el.appendChild(head);
+
+  const body=document.createElement('div');body.className='step-body';
+  if(step.why){
+    const w=document.createElement('div');w.className='why';
+    w.innerHTML='<b>למה:</b> '+step.why;
+    body.appendChild(w);
+  }
+  if(step.math){step.math.forEach(m=>body.appendChild(katexBlock(m)));}
+  if(step.html){const p=document.createElement('div');p.innerHTML=step.html;p.style.fontSize='14px';body.appendChild(p);}
+  if(step.table){body.appendChild(buildTable(step.table));}
+  if(step.calc){body.appendChild(buildCalc(step.calc));}
+  if(step.result){
+    const r=document.createElement('div');r.className='result-flag';
+    r.innerHTML='✓ '+step.result;
+    body.appendChild(r);
+  }
+  el.appendChild(body);
+
+  head.addEventListener('click',()=>{
+    const isOpen=el.classList.toggle('open');
+    el.classList.toggle('done',isOpen||el.classList.contains('done'));
+    head.querySelector('.step-toggle').textContent=isOpen?'הסתר':'הצג';
+    if(isOpen&&!openedSteps.has(sid)){openedSteps.add(sid);updateProgress();}
+    if(isOpen)render(body);
+  });
+  return el;
+}
+
+/* ---------- build one problem ---------- */
+function buildProblem(p,secId,pIdx){
+  const el=document.createElement('div');el.className='problem';
+  const head=document.createElement('div');head.className='p-head';
+  const tags=(p.tags||[]).map(t=>`<span class="tagchip">${t}</span>`).join('');
+  head.innerHTML=`
+    <div class="p-num">${p.num}</div>
+    <div class="p-titles">
+      <h3>${p.title}${p.pts?` <span style="color:var(--muted);font-weight:600;font-size:13px">· ${p.pts} נק'</span>`:''}</h3>
+      <div class="meta">${esc(p.meta)}</div>
+      <div class="tags">${tags}</div>
+    </div>
+    <div class="chev">▾</div>`;
+  el.appendChild(head);
+
+  const body=document.createElement('div');body.className='p-body';
+
+  if(p.given){
+    const g=document.createElement('div');g.className='given';
+    g.innerHTML=`<div class="lbl">נתון</div><div>${p.given}</div>`;
+    body.appendChild(g);
+  }
+
+  const controls=document.createElement('div');controls.className='controls';
+  controls.innerHTML=`<button class="mini reveal-all">חשוף את כל הצעדים</button>
+                      <button class="mini collapse-all">כווץ הכל</button>`;
+  body.appendChild(controls);
+
+  const steps=document.createElement('div');steps.className='steps';
+  p.steps.forEach((s,i)=>{
+    s._n=i+1;
+    const gKey=secId+'-'+pIdx+'-'+i;
+    steps.appendChild(buildStep(s,gKey));
+  });
+  body.appendChild(steps);
+  el.appendChild(body);
+
+  head.addEventListener('click',()=>{
+    const open=el.classList.toggle('open');
+    if(open)render(body);
+  });
+  controls.querySelector('.reveal-all').addEventListener('click',e=>{
+    e.stopPropagation();
+    steps.querySelectorAll('.step').forEach(st=>{
+      if(!st.classList.contains('open')){st.querySelector('.step-head').click();}
+    });
+  });
+  controls.querySelector('.collapse-all').addEventListener('click',e=>{
+    e.stopPropagation();
+    steps.querySelectorAll('.step.open').forEach(st=>st.querySelector('.step-head').click());
+  });
+
+  return el;
+}
+
+/* ---------- progress ---------- */
+function updateProgress(){
+  document.getElementById('progCount').textContent=openedSteps.size;
+}
+
+/* ---------- render a section ---------- */
+function renderSection(idx){
+  content.innerHTML='';
+  const sec=SECTIONS[idx];
+  const intro=document.createElement('div');
+  intro.style.cssText='margin:18px 0 4px';
+  intro.innerHTML=`<div class="hero" style="padding:8px 0 0">
+      <div class="eyebrow" style="direction:rtl;text-align:right">${sec.label}</div>
+      <p style="margin-top:6px">${sec.blurb}</p></div>`;
+  content.appendChild(intro);
+  sec.problems.forEach((p,pIdx)=>content.appendChild(buildProblem(p,sec.id,pIdx)));
+  render(content);
+  // tab states
+  [...tabsEl.children].forEach((t,i)=>t.classList.toggle('active',i===idx));
+}
+
+/* ---------- tabs ---------- */
+SECTIONS.forEach((s,i)=>{
+  totalSteps+=s.problems.reduce((a,p)=>a+p.steps.length,0);
+  const b=document.createElement('button');
+  b.className='tab';b.textContent=s.label;
+  b.addEventListener('click',()=>{renderSection(i);window.scrollTo({top:0,behavior:'smooth'});});
+  tabsEl.appendChild(b);
+});
+document.getElementById('progTotal').textContent=totalSteps;
+
+/* ============================================================
+   INTERACTIVE CALCULATORS
+   ============================================================ */
+function calcShell(label,fields,compute,initialNote){
+  const box=document.createElement('div');box.className='calc';
+  box.innerHTML=`<div class="lbl">▶ ${label}</div>`;
+  const row=document.createElement('div');row.className='calc-row';
+  const inputs={};
+  fields.forEach(f=>{
+    const fl=document.createElement('div');fl.className='field';
+    fl.innerHTML=`<label>${f.label}</label>`;
+    const inp=document.createElement('input');
+    inp.type='text';inp.value=f.def;inp.dataset.k=f.k;
+    fl.appendChild(inp);row.appendChild(fl);
+    inputs[f.k]=inp;
+  });
+  box.appendChild(row);
+  const out=document.createElement('div');out.className='calc-out';
+  box.appendChild(out);
+  function run(){
+    const vals={};Object.keys(inputs).forEach(k=>vals[k]=parseFloat(inputs[k].value));
+    try{ out.innerHTML=compute(vals); }
+    catch(e){ out.textContent='בדוק את הקלט'; }
+    render(out);
+  }
+  Object.values(inputs).forEach(inp=>inp.addEventListener('input',run));
+  run();
+  return box;
+}
+
+function buildCalc(key){
+  switch(key){
+
+  case 'q1_linf':
+    return calcShell('מחשבון L∞ — מרחק מהשאילתה (1, 0)',[
+      {k:'s',label:'Sessions (norm)',def:'0.2'},
+      {k:'a',label:'ActiveDays (norm)',def:'0.125'}
+    ],v=>{
+      const d=Math.max(Math.abs(1-v.s),Math.abs(0-v.a));
+      return `מרחק $L_\\infty=\\max(|1-${v.s}|,\\,|0-${v.a}|)=$ <span class="res">${d.toFixed(3)}</span>`;
+    });
+
+  case 'q2_l1':
+    return calcShell('מחשבון L1 בין שתי שורות (one-hot + Time)',[
+      {k:'cat',label:'מאפיינים שונים (0–4)',def:'2'},
+      {k:'t1',label:'Time A',def:'4.5'},
+      {k:'t2',label:'Time B',def:'6.2'}
+    ],v=>{
+      const d=v.cat+Math.abs(v.t1-v.t2);
+      return `$L_1=${v.cat}+|${v.t1}-${v.t2}|=$ <span class="res">${d.toFixed(2)}</span>`;
+    });
+
+  case 'q2_mahal':
+    return calcShell('מרחק משוקלל-מאפיינים √((X−Y)M(X−Y)ᵀ)',[
+      {k:'free',label:'Δ TypeFree',def:'0'},
+      {k:'desk',label:'Δ DeviceDesktop',def:'0'},
+      {k:'time',label:'Δ Time',def:'7.1'}
+    ],v=>{
+      const inside=2*v.free*v.free+1*v.desk*v.desk+3*v.time*v.time;
+      return `$\\sqrt{2(${v.free})^2+1(${v.desk})^2+3(${v.time})^2}=$ <span class="res">${Math.sqrt(inside).toFixed(3)}</span>`;
+    });
+
+  case 'q3_eig':
+    return calcShell('שונות נשמרת מממד אחד (3 ערכים עצמיים)',[
+      {k:'l1',label:'λ₁',def:'3.414'},
+      {k:'l2',label:'λ₂',def:'2'},
+      {k:'l3',label:'λ₃',def:'0.586'}
+    ],v=>{
+      const sum=v.l1+v.l2+v.l3,r=v.l1/sum*100;
+      return `$\\dfrac{${v.l1}}{${v.l1}+${v.l2}+${v.l3}}=$ <span class="res">${r.toFixed(1)}%</span> מהשונות`;
+    });
+
+  case 'q4_weight':
+    return calcShell('בדיקת מונוטוניות — w = 2^(−d)',[
+      {k:'di',label:'dᵢ (קרוב)',def:'1'},
+      {k:'dj',label:'dⱼ (רחוק)',def:'3'}
+    ],v=>{
+      const wi=Math.pow(2,-v.di),wj=Math.pow(2,-v.dj);
+      const ok=v.di<=v.dj?(wi>=wj):(wi<=wj);
+      return `$w_i=2^{-${v.di}}=${wi.toFixed(3)}$, $w_j=2^{-${v.dj}}=${wj.toFixed(3)}$ →
+        <span class="res">${wi>=wj?'הקרוב מקבל יותר ✓':'בדוק'}</span>`;
+    });
+
+  case 'gd1':
+    return calcShell('צעד GD על f(x)=x²−4x+1',[
+      {k:'x',label:'x נוכחי',def:'5'},
+      {k:'a',label:'α',def:'0.1'}
+    ],v=>{
+      const grad=2*v.x-4,xn=v.x-v.a*grad;
+      return `גרדיאנט $=2(${v.x})-4=${grad}$ → $x_{new}=${v.x}-${v.a}\\cdot${grad}=$ <span class="res">${xn.toFixed(3)}</span>`;
+    });
+
+  case 'gd2':
+    return calcShell('צעד GD על f(x,y)=3x²−3x+y²',[
+      {k:'x',label:'x',def:'0.7'},
+      {k:'y',label:'y',def:'1.6'},
+      {k:'a',label:'α',def:'0.1'}
+    ],v=>{
+      const gx=6*v.x-3,gy=2*v.y;
+      const xn=v.x-v.a*gx,yn=v.y-v.a*gy;
+      return `$x_{new}=${xn.toFixed(3)}$, $y_{new}=${yn.toFixed(3)}$ → <span class="res">(${xn.toFixed(3)}, ${yn.toFixed(3)})</span>`;
+    });
+
+  case 'dim_proj':
+    return calcShell('היטל נקודה על וקטור עצמי (dot product)',[
+      {k:'a',label:'centered x',def:'-4'},
+      {k:'b',label:'centered y',def:'-1'},
+      {k:'c',label:'centered z',def:'4'},
+      {k:'v1',label:'v·x',def:'-1'},
+      {k:'v2',label:'v·y',def:'0'},
+      {k:'v3',label:'v·z',def:'1'}
+    ],v=>{
+      const p=v.a*v.v1+v.b*v.v2+v.c*v.v3;
+      return `היטל $=(${v.a})(${v.v1})+(${v.b})(${v.v2})+(${v.c})(${v.v3})=$ <span class="res">${p.toFixed(2)}</span>`;
+    });
+
+  case 'dim_var':
+    return calcShell('יחס שונות לכל רכיב',[
+      {k:'l1',label:'λ₁',def:'24'},
+      {k:'l2',label:'λ₂',def:'2'},
+      {k:'l3',label:'λ₃',def:'3'}
+    ],v=>{
+      const s=v.l1+v.l2+v.l3;
+      return `$r_1=${(v.l1/s*100).toFixed(0)}\\%$, $r_2=${(v.l2/s*100).toFixed(0)}\\%$, $r_3=${(v.l3/s*100).toFixed(0)}\\%$
+        → <span class="res">רכיב 1 = ${(v.l1/s*100).toFixed(0)}%</span>`;
+    });
+
+  case 'tsne':
+    return calcShell('גרעין גאוסיאני g(d)=e^(−d²/2)',[
+      {k:'d',label:'מרחק d',def:'1'}
+    ],v=>{
+      const g=Math.exp(-(v.d*v.d)/2);
+      return `$g(${v.d})=e^{-${v.d}^2/2}=$ <span class="res">${g.toFixed(4)}</span> (דמיון)`;
+    });
+
+  case 't1_l1':
+    return calcShell('L1 מהווקטור (1, 0, 1)',[
+      {k:'x',label:'Feat1',def:'1'},
+      {k:'y',label:'Feat2',def:'4'},
+      {k:'z',label:'Feat3',def:'1'}
+    ],v=>{
+      const d=Math.abs(1-v.x)+Math.abs(0-v.y)+Math.abs(1-v.z);
+      return `$|1-${v.x}|+|0-${v.y}|+|1-${v.z}|=$ <span class="res">${d}</span>`;
+    });
+
+  case 't1_weighted':
+    return calcShell('סכום משקלים w=1/d² לכל מחלקה',[
+      {k:'dn1',label:'d (N #1)',def:'1'},
+      {k:'dn2',label:'d (N #2)',def:'3'},
+      {k:'dp',label:'d (P)',def:'2'}
+    ],v=>{
+      const N=1/(v.dn1*v.dn1)+1/(v.dn2*v.dn2),P=1/(v.dp*v.dp);
+      return `$N=${N.toFixed(2)}$ , $P=${P.toFixed(2)}$ → <span class="res">${N>P?'N':'P'}</span>`;
+    });
+
+  case 't2_weighted':
+    return calcShell('מרחק משוקלל M=diag(1,2,3)',[
+      {k:'a',label:'Δ Vote1',def:'0'},
+      {k:'b',label:'Δ Vote2',def:'-1'},
+      {k:'c',label:'Δ Vote3',def:'1'}
+    ],v=>{
+      const ins=1*v.a*v.a+2*v.b*v.b+3*v.c*v.c;
+      return `$\\sqrt{1(${v.a})^2+2(${v.b})^2+3(${v.c})^2}=\\sqrt{${ins}}=$ <span class="res">${Math.sqrt(ins).toFixed(3)}</span>`;
+    });
+
+  case 'g_cos':
+    return calcShell('מחשבון דמיון קוסינוס (4 ממדים)',[
+      {k:'x1',label:'x₁',def:'2'},{k:'x2',label:'x₂',def:'4.5'},
+      {k:'x3',label:'x₃',def:'0.12'},{k:'x4',label:'x₄',def:'6'},
+      {k:'y1',label:'y₁',def:'6'},{k:'y2',label:'y₂',def:'12.1'},
+      {k:'y3',label:'y₃',def:'0.42'},{k:'y4',label:'y₄',def:'18'}
+    ],v=>{
+      const dot=v.x1*v.y1+v.x2*v.y2+v.x3*v.y3+v.x4*v.y4;
+      const nx=Math.sqrt(v.x1**2+v.x2**2+v.x3**2+v.x4**2);
+      const ny=Math.sqrt(v.y1**2+v.y2**2+v.y3**2+v.y4**2);
+      const c=dot/(nx*ny);
+      return `$X\\cdot Y=${dot.toFixed(2)}$, $\\lVert X\\rVert=${nx.toFixed(3)}$, $\\lVert Y\\rVert=${ny.toFixed(3)}$
+        → <span class="res">cos = ${c.toFixed(4)}</span>`;
+    });
+
+  case 'g_sse':
+    return calcShell('SSE של אשכול אחד (2 נקודות, 2D)',[
+      {k:'ax',label:'P1 x',def:'2'},{k:'ay',label:'P1 y',def:'4'},
+      {k:'bx',label:'P2 x',def:'4'},{k:'by',label:'P2 y',def:'6'}
+    ],v=>{
+      const cx=(v.ax+v.bx)/2, cy=(v.ay+v.by)/2;
+      const sse=(cx-v.ax)**2+(cy-v.ay)**2+(cx-v.bx)**2+(cy-v.by)**2;
+      return `מרכז $=(${cx},${cy})$ → SSE $=$ <span class="res">${sse.toFixed(2)}</span>`;
+    });
+
+  case 'g_link':
+    return calcShell('Single מול Average מ-{1,5} לאשכול אחר',[
+      {k:'d1',label:'d(1,·)',def:'3.7'},
+      {k:'d5',label:'d(5,·)',def:'3.6'}
+    ],v=>{
+      const mn=Math.min(v.d1,v.d5), av=(v.d1+v.d5)/2;
+      return `Single $=\\min=$ <span class="res">${mn.toFixed(2)}</span> ,
+        Average $=\\frac{${v.d1}+${v.d5}}{2}=$ <span class="res">${av.toFixed(3)}</span>`;
+    });
+
+  default:
+    const d=document.createElement('div');return d;
+  }
+}
+
+/* ---------- init ---------- */
+renderSection(0);
+})();
+
+</script>
+</body>
+</html>
