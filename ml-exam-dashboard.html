@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>למידת מכונה — לוח פתרונות אינטראקטיבי</title>
+<title>למידת מכונה | לוח פתרונות אינטראקטיבי</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
@@ -218,6 +218,20 @@ table.data caption{font-size:12px;color:var(--muted);margin-bottom:6px;direction
   text-decoration:none;
 }
 .visual-link:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.resource-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.resource-link{
+  display:inline-flex;align-items:center;gap:8px;background:var(--card);
+  color:var(--blue);border:1px solid #d6e4eb;border-radius:9px;
+  padding:8px 13px;font-size:13px;font-weight:700;text-decoration:none;
+}
+.resource-link:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+.cov-breakdown{
+  background:#fbfaf6;border:1px solid var(--line);border-radius:11px;
+  padding:12px 14px;margin:12px 0;font-size:13.5px;
+}
+.cov-breakdown h4{font-size:14px;margin:0 0 8px;font-weight:800}
+.cov-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px}
+.cov-list div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 10px}
 
 footer{max-width:920px;margin:0 auto;padding:30px 18px;color:var(--muted);font-size:12.5px;text-align:center;border-top:1px solid var(--line)}
 .kbd{font-family:var(--mono);background:#efece3;border:1px solid var(--line-strong);border-radius:5px;padding:1px 6px;font-size:11.5px}
@@ -247,13 +261,17 @@ footer{max-width:920px;margin:0 auto;padding:30px 18px;color:var(--muted);font-s
 
 <div class="wrap">
   <section class="hero">
-    <div class="eyebrow">Step-by-step · learn the why</div>
-    <h2>כל שאלה, צעד אחר צעד —<br>עם הנוסחה, החישוב וההסבר.</h2>
-    <p>המבחן המלא (מועד א' 2026) וכל שלושת דפי התרגול. כל צעד נפתח בנפרד כדי שתבין <em>למה</em> עושים אותו, לא רק מהי התוצאה. חלק מהשאלות כוללות מחשבון חי — שנה ערכים וראה איך התשובה משתנה.</p>
+    <div class="eyebrow">Step by step · learn the why</div>
+    <h2>כל שאלה, צעד אחר צעד:<br>עם הנוסחה, החישוב וההסבר.</h2>
+    <p>המבחן המלא (מועד א' 2026) וכל שלושת דפי התרגול. כל צעד נפתח בנפרד כדי שתבין <em>למה</em> עושים אותו, לא רק מהי התוצאה. חלק מהשאלות כוללות מחשבון חי: שנה ערכים וראה איך התשובה משתנה.</p>
     <div class="legend">
       <span><i class="dot" style="background:var(--blue)"></i> הסבר "למה"</span>
       <span><i class="dot" style="background:var(--good)"></i> תוצאה סופית</span>
       <span><i class="dot" style="background:var(--accent)"></i> מחשבון אינטראקטיבי</span>
+    </div>
+    <div class="resource-row">
+      <a class="resource-link" href="דף נוסחאות.pdf" target="_blank" rel="noopener">פתח דף נוסחאות</a>
+      <a class="resource-link" href="eigenvalues-visual.html" target="_blank" rel="noopener">פתח המחשת ערכים עצמיים</a>
     </div>
   </section>
 
@@ -264,12 +282,12 @@ footer{max-width:920px;margin:0 auto;padding:30px 18px;color:var(--muted);font-s
 
 <footer>
   נבנה מתוך דף הנוסחאות ופתרונות הקורס · טיפ: לחץ על כותרת שאלה כדי לפתוח, ועל כל צעד כדי לחשוף את ההסבר.<br>
-  המחשבונים מבוססים על אותן נוסחאות מדף העזר — אפשר לשנות קלט ולבדוק את עצמך.
+  המחשבונים מבוססים על אותן נוסחאות מדף העזר. אפשר לשנות קלט ולבדוק את עצמך.
 </footer>
 
 <script>
 /* ============================================================
-   ML Exam Dashboard — content model
+   ML Exam Dashboard: content model
    Each section -> problems[] -> steps[]
    step: { title, why, math:[latex...], html, result, table }
    Some problems carry an interactive calc (calc key -> app.js)
@@ -284,15 +302,15 @@ window.SECTIONS = [
   /* ============ Q1 ============ */
   {
     num:"Q1", pts:20,
-    title:"נרמול Min-Max + סיווג KNN משוקלל",
-    meta:"Min-Max normalization · weighted KNN · L∞",
+    title:"נרמול Min Max + סיווג KNN משוקלל",
+    meta:"Min Max normalization · weighted KNN · L∞",
     tags:["Normalization","KNN","L∞","Weighted voting"],
-    given:`מנרמלים את העמודות <b>Sessions</b> ו-<b>ActiveDays</b> בנרמול Min-Max, ואז מסווגים את הווקטור
+    given:`מנרמלים את העמודות <b>Sessions</b> ואת <b>ActiveDays</b> בנרמול Min Max, ואז מסווגים את הווקטור
       <span dir="ltr">(Session=6, ActiveDays=4)</span> בעזרת KNN עם <span dir="ltr">K=3</span>,
       מטריקת מרחק <span dir="ltr">L∞</span> ומשקלי תצפיות <span dir="ltr">$w_i=\\sqrt{d_i^3}$</span>.`,
     steps:[
       {
-        title:"נוסחת הנרמול (Min-Max)",
+        title:"נוסחת הנרמול (Min Max)",
         why:"נרמול מביא את כל העמודות לסקאלה אחידה [0,1], כדי שעמודה עם ערכים גדולים (כמו ActiveDays) לא תשתלט על חישוב המרחק.",
         math:["x' = \\frac{x-\\min(X)}{\\max(X)-\\min(X)}"],
         html:`עבור <b>ActiveDays</b>: min=4, max=20 ⟶ $x'=\\dfrac{x-4}{16}$.<br>
@@ -300,7 +318,7 @@ window.SECTIONS = [
       },
       {
         title:"העמודות אחרי הנרמול",
-        why:"מציבים כל ערך בנוסחה. שים לב: הערך הקטן ביותר הופך ל-0 והגדול ביותר ל-1.",
+        why:"מציבים כל ערך בנוסחה. שים לב: הערך הקטן ביותר הופך לערך 0 והגדול ביותר לערך 1.",
         table:{
           dir:"ltr",
           head:["#","Sessions","→ norm","ActiveDays","→ norm","Target"],
@@ -332,12 +350,12 @@ window.SECTIONS = [
         why:"L∞ (Chebyshev) = ההפרש המוחלט הגדול ביותר על פני הצירים: $d=\\max_i|x_i-y_i|$. לוקחים רק את הציר ה'גרוע ביותר'.",
         calc:"q1_linf",
         math:["d_{L\\infty}(x,y)=\\max\\big(|s_x-s_y|,\\;|a_x-a_y|\\big)"],
-        html:`לדוגמה מול שורה 1 — <span dir="ltr">$(0.2,0.125)$</span>:
+        html:`לדוגמה מול שורה 1: <span dir="ltr">$(0.2,0.125)$</span>:
           <span dir="ltr">$\\max(|1-0.2|,|0-0.125|)=\\max(0.8,0.125)=0.8$</span>.`
       },
       {
         title:"שלושת השכנים הקרובים (K=3)",
-        why:"בוחרים את 3 התצפיות עם המרחק הקטן ביותר. השורות 3 ו-8 הן תצפיות High שקרובות לשאילתה אחרי הנרמול.",
+        why:"בוחרים את 3 התצפיות עם המרחק הקטן ביותר. השורות 3 ו 8 הן תצפיות High שקרובות לשאילתה אחרי הנרמול.",
         table:{
           dir:"ltr",
           head:["Neighbor","L∞","Target","wᵢ = √(dᵢ³)"],
@@ -351,7 +369,7 @@ window.SECTIONS = [
       },
       {
         title:"הצבעה משוקללת → התוצאה",
-        why:"כל שלושת השכנים הקרובים שייכים ל-High, ולכן גם הצבעה רגילה וגם הצבעה משוקללת נותנות את אותה מחלקה.",
+        why:"כל שלושת השכנים הקרובים שייכים למחלקת High, ולכן גם הצבעה רגילה וגם הצבעה משוקללת נותנות את אותה מחלקה.",
         result:"הסיווג שמתקבל: High",
         html:`לפי הפתרון הרשמי מתקבל הסיווג <b>High</b>.`
       }
@@ -361,16 +379,16 @@ window.SECTIONS = [
   /* ============ Q2 ============ */
   {
     num:"Q2", pts:20,
-    title:"אשכול היררכי (Complete-Link) + KNN משוקלל מאפיינים",
-    meta:"Hierarchical clustering · complete-link · one-hot · weighted-feature KNN",
-    tags:["Clustering","Complete-link","One-hot","L1","KNN"],
+    title:"אשכול היררכי (Complete Link) + KNN משוקלל מאפיינים",
+    meta:"Hierarchical clustering · complete link · one hot · weighted feature KNN",
+    tags:["Clustering","Complete link","One hot","L1","KNN"],
     given:`עובדים עם העמודות <b>Type, Device, Time</b>.
-      <br>(א) שורות 1–5: אשכול היררכי עם <span dir="ltr">L1</span> וחיבור <span dir="ltr">complete-link</span>, פלט של שני אשכולות.
-      <br>(ב) שורות 1–3: סיווג הווקטור <span dir="ltr">Type=Free, Device=Mobile, Time=11.6</span> ב-KNN עם <span dir="ltr">K=1</span> ומשקלי מאפיינים <span dir="ltr">Free=2, Desktop=1, Time=3</span>.`,
+      <br>(א) שורות 1 עד 5: אשכול היררכי עם <span dir="ltr">L1</span> וחיבור <span dir="ltr">complete link</span>, פלט של שני אשכולות.
+      <br>(ב) שורות 1 עד 3: סיווג הווקטור <span dir="ltr">Type=Free, Device=Mobile, Time=11.6</span> באמצעות KNN עם <span dir="ltr">K=1</span> ומשקלי מאפיינים <span dir="ltr">Free=2, Desktop=1, Time=3</span>.`,
     steps:[
       {
-        title:"קידוד One-Hot למשתנים קטגוריאליים",
-        why:"מרחק מספרי דורש מספרים. כל קטגוריה הופכת לעמודת 0/1 — כך 'Free' ו-'Premium' מקבלים מרחק מוגדר.",
+        title:"קידוד One Hot למשתנים קטגוריאליים",
+        why:"מרחק מספרי דורש מספרים. כל קטגוריה הופכת לעמודת 0/1, וכך 'Free' ו Premium מקבלים מרחק מוגדר.",
         table:{
           dir:"ltr",
           head:["#","TypeFree","TypePrem","DevMobile","DevDesktop","Time"],
@@ -385,7 +403,7 @@ window.SECTIONS = [
       },
       {
         title:"מטריצת מרחקים L1 (Manhattan)",
-        why:"L1 = סכום ההפרשים המוחלטים על כל הצירים. לקטגוריאליים זה 0/2 (זהה/שונה), ומוסיפים את הפרש ה-Time.",
+        why:"L1 = סכום ההפרשים המוחלטים על כל הצירים. לקטגוריאליים זה 0/2 (זהה/שונה), ומוסיפים את הפרש עמודת Time.",
         calc:"q2_l1",
         math:["L_1(x,y)=\\sum_i |x_i-y_i|"],
         html:`דוגמה: <span dir="ltr">$L_1(1,2)=|1-1|+|0-0|+|1-0|+|0-1|+|4.5-6.2|=3.7$</span>`,
@@ -393,32 +411,32 @@ window.SECTIONS = [
           dir:"ltr",
           head:["","1","2","3","4","5"],
           rows:[
-            ["1","–","","","",""],
-            ["2","3.7","–","","",""],
-            ["3","9.6","9.9","–","",""],
-            ["4","9.9","6.2","3.7","–",""],
-            ["5","3.3","3.6","6.3","6.6","–"]
+            ["1","0","","","",""],
+            ["2","3.7","0","","",""],
+            ["3","9.6","9.9","0","",""],
+            ["4","9.9","6.2","3.7","0",""],
+            ["5","3.3","3.6","6.3","6.6","0"]
           ]
         }
       },
       {
-        title:"איחוד אשכולות — complete-link",
-        why:"Complete-link מודד את המרחק בין אשכולות לפי הזוג הרחוק ביותר ביניהם (max). בכל שלב מאחדים את הזוג עם המרחק הקטן ביותר.",
+        title:"איחוד אשכולות: complete link",
+        why:"Complete link מודד את המרחק בין אשכולות לפי הזוג הרחוק ביותר ביניהם (max). בכל שלב מאחדים את הזוג עם המרחק הקטן ביותר.",
         math:["d(C_i,C_j)=\\max\\{d(x_i,x_j)\\}"],
-        html:`<b>שלב 1:</b> המרחק הקטן ביותר הוא 3.3 → מאחדים 1 ו-5 ⟶ <span dir="ltr">{1,5},{2},{3},{4}</span><br>
-              <b>שלב 2:</b> 3.7 בין 3 ו-4 → <span dir="ltr">{1,5},{2},{3,4}</span><br>
+        html:`<b>שלב 1:</b> המרחק הקטן ביותר הוא 3.3 → מאחדים 1 ו 5 ⟶ <span dir="ltr">{1,5},{2},{3},{4}</span><br>
+              <b>שלב 2:</b> 3.7 בין 3 ו 4 → <span dir="ltr">{1,5},{2},{3,4}</span><br>
               <b>שלב 3:</b> מצרפים 2 לאשכול {1,5} ⟶ הפלט הסופי:`,
-        result:"שני אשכולות: {1,2,5} ו-{3,4}"
+        result:"שני אשכולות: {1,2,5} וגם {3,4}"
       },
       {
-        title:"(ב) KNN משוקלל מאפיינים — מטריצת M",
+        title:"(ב) KNN משוקלל מאפיינים: מטריצת M",
         why:"משקלי מאפיינים נכנסים כמטריצה אלכסונית M בתוך המרחק $D=\\sqrt{(X-Y)M(X-Y)^T}$. משקל גבוה = המאפיין משפיע יותר.",
         math:["M=\\operatorname{diag}(2,0,0,1,3)"],
-        html:`רק TypeFree (משקל 2), DeviceDesktop (1), ו-Time (3) מקבלים משקל; השאר 0. הווקטור: <span dir="ltr">$(1,0,1,0,11.6)$</span>.`
+        html:`רק TypeFree (משקל 2), DeviceDesktop (1), ועמודת Time (משקל 3) מקבלים משקל; השאר 0. הווקטור: <span dir="ltr">$(1,0,1,0,11.6)$</span>.`
       },
       {
         title:"חישוב המרחקים המשוקללים",
-        why:"מציבים בנוסחה לכל אחת מ-3 השורות. K=1 ⟶ נבחר רק השכן הקרוב ביותר.",
+        why:"מציבים בנוסחה לכל אחת משלוש השורות. K=1 ⟶ נבחר רק השכן הקרוב ביותר.",
         calc:"q2_mahal",
         math:[
           "d_1=\\sqrt{3\\cdot 7.1^2}=12.298",
@@ -434,29 +452,29 @@ window.SECTIONS = [
 }
 ];
 
-/* ---- Append Q3 & Q4 to the exam section ---- */
+/* Append Q3 and Q4 to the exam section */
 (function(){
 var exam = window.SECTIONS[0].problems;
 
 /* ============ Q3 ============ */
 exam.push({
   num:"Q3", pts:25,
-  title:"ID3 — בחירת מאפיין שורש + PCA (אחוז שונות)",
-  meta:"Information Gain · entropy · multi-way vs binary split · eigen-decomposition",
+  title:"ID3: בחירת מאפיין שורש + PCA (אחוז שונות)",
+  meta:"Information Gain · entropy · multi way vs binary split · eigen decomposition",
   tags:["ID3","Entropy","Info Gain","PCA","Eigenvalues"],
-  given:`(א) הרצת ID3 על Device, Time — איזה מאפיין יושב בשורש אחרי האיטרציה הראשונה?
-    קטגוריאלי → multi-way split; נומרי → binary split סביב הממוצע.
-    <br>(ב) נתונה מטריצת השונות המשותפת — כמה מאפיינים מקוריים היו, ומהו אחוז השונות שנשמר בממד אחד?`,
+  given:`(א) הרצת ID3 על Device, Time. איזה מאפיין יושב בשורש אחרי האיטרציה הראשונה?
+    קטגוריאלי → multi way split; נומרי → binary split סביב הממוצע.
+    <br>(ב) נתונה מטריצת השונות המשותפת. כמה מאפיינים מקוריים היו, ומהו אחוז השונות שנשמר בממד אחד?`,
   steps:[
     {
       title:"אנטרופיה התחלתית של Target",
-      why:"אנטרופיה מודדת אי-ודאות. ב-Target יש 3 Low, 4 Medium, 3 High (מתוך 10), לכן ההתפלגות היא 0.3 / 0.4 / 0.3.",
+      why:"אנטרופיה מודדת אי ודאות. בעמודת Target יש 3 Low, 4 Medium, 3 High (מתוך 10), לכן ההתפלגות היא 0.3 / 0.4 / 0.3.",
       math:["H(X)=-\\sum_i p_i\\log_2 p_i",
             "H(Target)=-(0.3\\log0.3+0.4\\log0.4+0.3\\log0.3)=1.571"]
     },
     {
       title:"Information Gain עבור Device",
-      why:"Device קטגוריאלי → מפצלים multi-way (Mobile / Desktop). ה-IG = אנטרופיה לפני פחות האנטרופיה המשוקללת אחרי.",
+      why:"Device קטגוריאלי → מפצלים multi way (Mobile / Desktop). IG שווה לאנטרופיה לפני הפיצול פחות האנטרופיה המשוקללת אחרי הפיצול.",
       math:[
         "H_{Mobile}=-\\big(\\tfrac16\\log\\tfrac16+\\tfrac16\\log\\tfrac16+\\tfrac46\\log\\tfrac46\\big)=1.25",
         "H_{Desktop}=-(0.5\\log0.5+0.5\\log0.5)=1",
@@ -474,12 +492,12 @@ exam.push({
     },
     {
       title:"השוואה → מאפיין השורש",
-      why:"בוחרים את המאפיין עם ה-IG הגבוה ביותר — הוא מפריד הכי טוב בין המחלקות.",
+      why:"בוחרים את המאפיין עם ערך IG הגבוה ביותר, כי הוא מפריד הכי טוב בין המחלקות.",
       html:`<span dir="ltr">$IG(Time)=0.6 > IG(Device)=0.421$</span>`,
       result:"Time יושב בשורש העץ"
     },
     {
-      title:"(ב) PCA — מציאת ערכים עצמיים",
+      title:"(ב) PCA: מציאת ערכים עצמיים",
       why:"מספר הממדים = גודל המטריצה (3×3 ⟹ 3 מאפיינים מקוריים). פותרים $|COV-\\lambda I|=0$.",
       calc:"q3_eig",
       math:[
@@ -502,42 +520,42 @@ exam.push({
 exam.push({
   num:"Q4", pts:30,
   title:"תקינות נרמול ופונקציות משקל",
-  meta:"normalization validity · monotonic weight functions · proof by order-preservation",
+  meta:"normalization validity · monotonic weight functions · proof by order preservation",
   tags:["Normalization","Weight function","Monotonicity","Proof"],
-  given:`(א) נרמול $\\frac{x_i-\\min(X)}{1-x_i}$ — האם תקין לאלגוריתם למידה?
-    <br>(ב) פונקציית משקל $w_i=e^{d_i}$ — האם תקינה? ($d_i$ = מרחק אוקלידי בין תצפיות).
+  given:`(א) נרמול $\\frac{x_i-\\min(X)}{1-x_i}$. האם תקין לאלגוריתם למידה?
+    <br>(ב) פונקציית משקל $w_i=e^{d_i}$. האם תקינה? ($d_i$ = מרחק אוקלידי בין תצפיות).
     <br>(ג) חזרה על (ב) עם $w_i=2^{-d_i}$.`,
   steps:[
     {
       title:"(א) תנאי התקינות לנרמול",
-      why:"נרמול תקין חייב לשמר סדר: אם $x_i\\le x_j$ אז גם הערכים המנורמלים חייבים לקיים את אותו אי-שוויון. אחרת המבנה של הנתונים נשבר.",
+      why:"נרמול תקין חייב לשמר סדר: אם $x_i\\le x_j$ אז גם הערכים המנורמלים חייבים לקיים את אותו אי שוויון. אחרת המבנה של הנתונים נשבר.",
       math:["x_i\\le x_j \\;\\Rightarrow\\; x_i-\\min(X)\\le x_j-\\min(X)"],
-      html:`המונה שומר סדר. הבעיה היא <b>המכנה</b> $1-x_i$ — הוא תלוי ב-$x_i$ עצמו ולא קבוע.`
+      html:`המונה שומר סדר. הבעיה היא <b>המכנה</b> $1-x_i$, כי הוא תלוי ב-$x_i$ עצמו ולא קבוע.`
     },
     {
       title:"(א) למה זה לא תקין",
-      why:"המכנה $1-x_i$ משתנה מערך לערך, ואי אפשר לדעת אם הוא חיובי או שלילי. חלוקה בסימן לא ידוע יכולה להפוך את כיוון אי-השוויון.",
-      result:"לא תקין — הסדר בין הערכים עלול להתהפך",
+      why:"המכנה $1-x_i$ משתנה מערך לערך, ואי אפשר לדעת אם הוא חיובי או שלילי. חלוקה בסימן לא ידוע יכולה להפוך את כיוון אי השוויון.",
+      result:"לא תקין. הסדר בין הערכים עלול להתהפך",
       html:`כיוון שלא ידוע סימן $1-x_i$, לא ניתן להבטיח שהיחס נשמר. <b>הנרמול אינו תקין.</b>`
     },
     {
       title:"(ב) תנאי לפונקציית משקל תקינה",
-      why:"משקל תקין נותן ערך גבוה יותר לתצפית קרובה יותר. כלומר ככל שהמרחק קטן — המשקל גדל (פונקציה יורדת ב-d).",
+      why:"משקל תקין נותן ערך גבוה יותר לתצפית קרובה יותר. כלומר ככל שהמרחק קטן, המשקל גדל (פונקציה יורדת לפי d).",
       math:["d_i\\le d_j \\;\\Rightarrow\\; w_i \\ge w_j \\;(\\text{נדרש})"]
     },
     {
       title:"(ב) בדיקת $w_i=e^{d_i}$",
-      why:"$e^{d}$ היא פונקציה עולה: מרחק גדול ⟹ משקל גדול. זה הפוך מהדרישה — תצפית רחוקה מקבלת יותר משקל.",
+      why:"$e^{d}$ היא פונקציה עולה: מרחק גדול ⟹ משקל גדול. זה הפוך מהדרישה, כי תצפית רחוקה מקבלת יותר משקל.",
       math:["d_i\\le d_j \\Rightarrow e^{d_i}\\le e^{d_j} \\Rightarrow w_i\\le w_j"],
-      result:"לא תקינה — הקרוב מקבל פחות משקל",
+      result:"לא תקינה. הקרוב מקבל פחות משקל",
     },
     {
       title:"(ג) בדיקת $w_i=2^{-d_i}$",
-      why:"המעריך השלילי הופך את הכיוון: מרחק גדול ⟹ מעריך שלילי גדול ⟹ ערך קטן. עכשיו הקרוב מקבל יותר משקל — בדיוק כנדרש.",
+      why:"המעריך השלילי הופך את הכיוון: מרחק גדול ⟹ מעריך שלילי גדול ⟹ ערך קטן. עכשיו הקרוב מקבל יותר משקל, בדיוק כנדרש.",
       math:[
         "d_i\\le d_j \\Rightarrow 2^{d_i}\\le 2^{d_j} \\Rightarrow \\frac{1}{2^{d_i}}\\ge\\frac{1}{2^{d_j}}"
       ],
-      result:"תקינה ✓ — הקרוב מקבל משקל גבוה יותר",
+      result:"תקינה ✓ הקרוב מקבל משקל גבוה יותר",
       calc:"q4_weight"
     }
   ]
@@ -545,7 +563,7 @@ exam.push({
 })();
 
 /* ============================================================
-   PRACTICE SET 1 — Gradient Descent
+   PRACTICE SET 1: Gradient Descent
    ============================================================ */
 window.SECTIONS.push({
   id:"gd",
@@ -567,7 +585,7 @@ window.SECTIONS.push({
         },
         {
           title:"3 האיטרציות",
-          why:"מציבים את x הנוכחי בנגזרת, מכפילים ב-α, ומחסרים. כל פעם x מתקרב למינימום (x=2).",
+          why:"מציבים את x הנוכחי בנגזרת, מכפילים בערך α, ומחסרים. כל פעם x מתקרב למינימום (x=2).",
           calc:"gd1",
           math:[
             "x_1=5-0.1(2\\cdot5-4)=4.4",
@@ -587,13 +605,13 @@ window.SECTIONS.push({
       steps:[
         {
           title:"נגזרות חלקיות",
-          why:"בשני משתנים מעדכנים כל משתנה בנפרד לפי הנגזרת החלקית שלו — שניהם בו-זמנית.",
+          why:"בשני משתנים מעדכנים כל משתנה בנפרד לפי הנגזרת החלקית שלו, ושניהם מתעדכנים בו זמנית.",
           math:["\\frac{\\partial f}{\\partial x}=6x-3",
                 "\\frac{\\partial f}{\\partial y}=2y"]
         },
         {
           title:"איטרציה 1",
-          why:"מציבים (1,2) בשתי הנגזרות ומעדכנים את x ו-y יחד.",
+          why:"מציבים (1,2) בשתי הנגזרות ומעדכנים את x ו y יחד.",
           math:[
             "x=1-0.1(6\\cdot1-3)=0.7",
             "y=2-0.1(2\\cdot2)=1.6",
@@ -615,7 +633,7 @@ window.SECTIONS.push({
     },
     {
       num:"GD·3", pts:null,
-      title:"רגרסיה לינארית עם GD ו-MSE",
+      title:"רגרסיה לינארית עם GD ו MSE",
       meta:"fit y=ax+b · points (2,4),(5,2) · a=2,b=3 · α=0.1 · 1 iteration",
       tags:["Linear regression","MSE","Gradient Descent"],
       given:`מתאימים קו $y=ax+b$ בעזרת GD עם פונקציית מטרה MSE. נתונים: $(2,4),(5,2)$.
@@ -623,7 +641,7 @@ window.SECTIONS.push({
       steps:[
         {
           title:"פונקציית המטרה MSE והנגזרות",
-          why:"גוזרים את ה-MSE לפי a ולפי b. שרשרת הגזירה מכניסה את $(-x)$ עבור a ואת $(-1)$ עבור b.",
+          why:"גוזרים את MSE לפי a ולפי b. שרשרת הגזירה מכניסה את $(-x)$ עבור a ואת $(-1)$ עבור b.",
           math:[
             "MSE=\\tfrac12\\sum_i\\big(y_i-(ax_i+b)\\big)^2",
             "\\frac{\\partial}{\\partial a}=\\sum_i(y_i-ax_i-b)(-x_i)",
@@ -650,31 +668,31 @@ window.SECTIONS.push({
 });
 
 /* ============================================================
-   PRACTICE SET 2 — Dimensionality Reduction (PCA / t-SNE)
+   PRACTICE SET 2: Dimensionality Reduction (PCA / t SNE)
    ============================================================ */
 window.SECTIONS.push({
   id:"dim",
   label:"תרגול · הפחתת ממדים",
-  blurb:"PCA מלא צעד-אחר-צעד · אחוז שונות · מיפוי t-SNE",
+  blurb:"PCA מלא צעד אחר צעד · אחוז שונות · מיפוי t SNE",
   problems:[
     {
       num:"DIM·1", pts:null,
-      title:"PCA מלא — דחיסה ל-2 ממדים",
+      title:"PCA מלא: דחיסה לשני ממדים",
       meta:"4 points in 3D · center → covariance → eigen → project",
       tags:["PCA","Covariance","Eigenvalues","Eigenvectors","Projection"],
-      given:`נתונות 4 נקודות תלת-ממדיות (מסומנות No/Yes). מבצעים PCA לדחיסה ל-2 מאפיינים ומציגים על מערכת צירים חדשה.`,
+      given:`נתונות 4 נקודות תלת ממדיות (מסומנות No/Yes). מבצעים PCA לדחיסה לשני מאפיינים ומציגים על מערכת צירים חדשה. המטרה היא להחליף את שלושת הצירים המקוריים בשני צירים חדשים ששומרים כמה שיותר שונות.`,
       steps:[
         {
-          title:"שלב 1 — וקטור הממוצע",
-          why:"PCA מתחיל במרכוז: צריך את הממוצע של כל עמודה כדי להזיז את הענן לראשית הצירים.",
+          title:"שלב 1: וקטור הממוצע",
+          why:"PCA מתחיל במרכוז. מחשבים ממוצע לכל עמודה כדי לדעת איפה נמצא מרכז ענן הנקודות. אחר כך מזיזים את כל הנקודות ביחס למרכז הזה.",
           math:["\\mu=(6,5,6)"],
           table:{dir:"ltr",head:["f₁","f₂","f₃","Target"],rows:[
             ["2","4","10","No"],["6","4","6","No"],["6","8","6","Yes"],["10","4","2","Yes"]
           ]}
         },
         {
-          title:"שלב 2 — מרכוז הנתונים",
-          why:"מחסרים את הממוצע מכל נקודה. עכשיו הענן ממורכז סביב 0, וכיוון השונות הופך חד-משמעי.",
+          title:"שלב 2: מרכוז הנתונים",
+          why:"מחסרים את וקטור הממוצע מכל נקודה. אחרי המרכוז, כל עמודה מתארת סטייה מהממוצע ולא ערך גולמי. זה חשוב כי PCA מחפש כיווני שונות סביב המרכז.",
           math:[
             "(2,4,10)-\\mu=(-4,-1,4)",
             "(6,4,6)-\\mu=(0,-1,0)",
@@ -683,43 +701,57 @@ window.SECTIONS.push({
           ]
         },
         {
-          title:"שלב 3 — מטריצת השונות המשותפת COV",
-          why:"COV מסכמת את המכפלות החיצוניות של הווקטורים הממורכזים, לאחר חלוקה ב-n. היא לוכדת איך הצירים משתנים יחד.",
+          title:"שלב 3: מטריצת השונות המשותפת COV",
+          why:"בדף הנוסחאות מופיע $COV=\\frac{1}{n}\\sum_i (x_i-\\mu)(x_i-\\mu)^T$. כלומר לכל נקודה ממורכזת יוצרים מכפלה חיצונית, מחברים את כל המטריצות, ואז מחלקים במספר הנקודות. כל תא במטריצה נוצר ממכפלה בין שתי עמודות ממורכזות.",
           math:[
+            "z_1=(-4,-1,4),\\quad z_2=(0,-1,0),\\quad z_3=(0,3,0),\\quad z_4=(4,-1,-4)",
+            "COV_{ij}=\\frac{1}{4}\\sum_{r=1}^{4} z_{r,i}z_{r,j}",
             "COV=\\frac14\\begin{pmatrix}32&0&-32\\\\0&12&0\\\\-32&0&32\\end{pmatrix}=\\begin{pmatrix}8&0&-8\\\\0&3&0\\\\-8&0&8\\end{pmatrix}"
-          ]
+          ],
+          html:`<div class="cov-breakdown">
+            <h4>איך מגיעים לכל תא במטריצה?</h4>
+            <div class="cov-list">
+              <div><span dir="ltr">$C_{11}=\\frac{16+0+0+16}{4}=8$</span><br>שונות של הציר הראשון.</div>
+              <div><span dir="ltr">$C_{22}=\\frac{1+1+9+1}{4}=3$</span><br>שונות של הציר השני.</div>
+              <div><span dir="ltr">$C_{33}=\\frac{16+0+0+16}{4}=8$</span><br>שונות של הציר השלישי.</div>
+              <div><span dir="ltr">$C_{12}=\\frac{4+0+0-4}{4}=0$</span><br>הצירים הראשון והשני מתקזזים.</div>
+              <div><span dir="ltr">$C_{13}=\\frac{-16+0+0-16}{4}=-8$</span><br>הצירים הראשון והשלישי נעים בכיוונים מנוגדים.</div>
+              <div><span dir="ltr">$C_{23}=\\frac{-4+0+0+4}{4}=0$</span><br>הצירים השני והשלישי מתקזזים.</div>
+            </div>
+            <p>המטריצה סימטרית, לכן <span dir="ltr">$C_{21}=C_{12}$</span>, <span dir="ltr">$C_{31}=C_{13}$</span>, וגם <span dir="ltr">$C_{32}=C_{23}$</span>.</p>
+          </div>`
         },
         {
-          title:"שלב 4 — ערכים עצמיים",
+          title:"שלב 4: ערכים עצמיים",
           why:"הערכים העצמיים = כמות השונות בכל כיוון ראשי. פותרים $|COV-\\lambda I|=0$.",
           math:[
             "(3-\\lambda)\\big[(8-\\lambda)^2-64\\big]=0",
             "\\lambda_1=16,\\;\\lambda_2=3,\\;\\lambda_3=0"
           ],
-          html:`3 ערכים עצמיים → בוחרים את 2 הגדולים (16 ו-3) לדחיסה ל-2 ממדים.`
+          html:`קיבלנו 3 ערכים עצמיים. לדחיסה לשני ממדים בוחרים את שני הגדולים: 16 ו 3.`
         },
         {
-          title:"שלב 5 — וקטורים עצמיים",
-          why:"כל ערך עצמי נותן כיוון (וקטור עצמי) — זה הציר החדש שעליו מטילים. פותרים $(COV-\\lambda I)v=0$.",
+          title:"שלב 5: וקטורים עצמיים",
+          why:"כל ערך עצמי נותן כיוון, כלומר וקטור עצמי. זה הציר החדש שעליו מטילים את הנתונים. פותרים $(COV-\\lambda I)v=0$.",
           math:[
             "\\lambda=16:\\;v=(-1,0,1)",
-            "\\lambda=3:\\;v=(1.6,0,1)"
+            "\\lambda=3:\\;v=(0,1,0)"
           ]
         },
         {
-          title:"שלב 6 — היטל הנתונים (Projection)",
+          title:"שלב 6: היטל הנתונים (Projection)",
           why:"מכפילים כל נקודה ממורכזת בכל וקטור עצמי → הקואורדינטות החדשות PC1, PC2.",
           calc:"dim_proj",
           table:{dir:"ltr",head:["PC1","PC2","Target"],rows:[
-            ["8","-2.4","No"],["0","0","No"],["0","0","Yes"],["-8","2.4","Yes"]
+            ["8","-1","No"],["0","-1","No"],["0","3","Yes"],["-8","-1","Yes"]
           ]},
-          result:"הנתונים נדחסו ל-2 ממדים (PC1, PC2)"
+          result:"הנתונים נדחסו לשני ממדים (PC1, PC2)"
         }
       ]
     },
     {
       num:"DIM·2", pts:null,
-      title:"PCA — כמה רכיבים לשמירת 75% שונות",
+      title:"PCA: כמה רכיבים לשמירת 75% שונות",
       meta:"λ₁=24, λ₂=2, λ₃=3 · variance ratio",
       tags:["PCA","Variance ratio","Component selection"],
       given:`ערכים עצמיים $\\lambda_1=24,\\;\\lambda_2=2,\\;\\lambda_3=3$. כמה רכיבים נדרשים לשמירת לפחות 75% מהשונות?`,
@@ -743,19 +775,19 @@ window.SECTIONS.push({
     },
     {
       num:"DIM·3", pts:null,
-      title:"מיפוי t-SNE — דמיון מבוסס גאוסיאן",
+      title:"מיפוי t SNE: דמיון מבוסס גאוסיאן",
       meta:"4 points · g(d)=e^(−d²/2σ²) · σ=1 · L1,L2,L∞",
-      tags:["t-SNE","Similarity","Gaussian kernel"],
+      tags:["t SNE","Similarity","Gaussian kernel"],
       given:`נקודות: $x_1=(0,0),x_2=(1,0),x_3=(0,3),x_4=(2,2)$. פונקציה $g(d)=e^{-d^2/2\\sigma^2}$, $\\sigma=1$.
-        בודקים את מיפוי t-SNE עבור $x_1$ עם המטריקות $L_1,L_2,L_\\infty$.`,
+        בודקים את מיפוי t SNE עבור $x_1$ עם המטריקות $L_1,L_2,L_\\infty$.`,
       steps:[
         {
-          title:"רעיון הליבה של t-SNE",
-          why:"t-SNE הופך מרחקים לדמיונות עם גרעין גאוסיאני: נקודה קרובה ⟵ דמיון גבוה, נקודה רחוקה ⟵ דמיון שדועך מהר (אקספוננציאלית).",
+          title:"רעיון הליבה של t SNE",
+          why:"t SNE הופך מרחקים לדמיונות עם גרעין גאוסיאני: נקודה קרובה ⟵ דמיון גבוה, נקודה רחוקה ⟵ דמיון שדועך מהר (אקספוננציאלית).",
           math:["g(d)=e^{-d^2/2\\sigma^2}, \\quad \\sigma=1 \\Rightarrow g(d)=e^{-d^2/2}"]
         },
         {
-          title:"מרחקים מ-x₁ בכל מטריקה",
+          title:"מרחקים מ x₁ בכל מטריקה",
           why:"כל מטריקה נותנת מרחק שונה. מציבים בכל אחת את ההפרשים בין x₁ לשאר הנקודות.",
           calc:"tsne",
           math:[
@@ -767,7 +799,7 @@ window.SECTIONS.push({
         {
           title:"מהמרחק לדמיון",
           why:"מכניסים כל מרחק לגרעין הגאוסיאני. שים לב איך הבחירה במטריקה משנה את הדמיון לנקודה x₄ (האלכסונית).",
-          html:`עבור $x_4$: ב-$L_2$ ⟵ $e^{-2.83^2/2}=e^{-4}$ ; ב-$L_\\infty$ ⟵ $e^{-2}$.
+          html:`עבור $x_4$: במטריקת $L_2$ ⟵ $e^{-2.83^2/2}=e^{-4}$ ; במטריקת $L_\\infty$ ⟵ $e^{-2}$.
             המטריקה משנה איזו נקודה נחשבת "שכנה".`,
           result:"בחירת המטריקה משנה את מבנה השכנויות במיפוי"
         }
@@ -777,26 +809,26 @@ window.SECTIONS.push({
 });
 
 /* ============================================================
-   PRACTICE SET 3 — Or Peretz: KNN + Decision Trees
+   PRACTICE SET 3: Or Peretz KNN + Decision Trees
    ============================================================ */
 window.SECTIONS.push({
   id:"trees",
   label:"תרגול · KNN ועצי החלטה",
-  blurb:"KNN משוקלל · Information Gain · בניית עץ · דיוק · KNN משוקלל-מאפיינים",
+  blurb:"KNN משוקלל · Information Gain · בניית עץ · דיוק · KNN עם משקלי מאפיינים",
   problems:[
     {
       num:"T·1", pts:null,
       title:"KNN + Information Gain + עץ החלטה + דיוק",
       meta:"classify (1,0,1) · L1 · weighted KNN · IG on Feature 1 · accuracy",
       tags:["KNN","L1","Weighted KNN","Info Gain","Decision tree","Accuracy"],
-      given:`טבלת אימון 6 שורות (Feature 1–3, Class P/N).
-        (א) סווג $(1,0,1)$ ב-KNN, K=3, מטריקת $L_1$ — ללא משקל ועם $w_i=1/d_i^2$.
+      given:`טבלת אימון 6 שורות (Feature 1 עד 3, Class P/N).
+        (א) סווג $(1,0,1)$ באמצעות KNN, K=3, מטריקת $L_1$. נבדוק ללא משקל ועם $w_i=1/d_i^2$.
         (ב) חשב IG של Class בהינתן Feature 1 (פיצול חיובי/שלילי).
         (ג) בנה עץ ברמה אחת. (ד) חשב דיוק.`,
       steps:[
         {
           title:"(א) מרחקי L1 מהווקטור (1,0,1)",
-          why:"L1 = סכום ההפרשים המוחלטים. מחשבים מרחק לכל אחת מ-6 שורות האימון.",
+          why:"L1 = סכום ההפרשים המוחלטים. מחשבים מרחק לכל אחת מתוך 6 שורות האימון.",
           calc:"t1_l1",
           math:[
             "L_1((1,0,1),(1,4,1))=0+4+0=4",
@@ -825,7 +857,7 @@ window.SECTIONS.push({
         },
         {
           title:"(ב) אנטרופיה התחלתית של Class",
-          why:"3 P ו-3 N מתוך 6 → התפלגות 0.5/0.5, האנטרופיה המקסימלית האפשרית.",
+          why:"3 P וגם 3 N מתוך 6 → התפלגות 0.5/0.5, האנטרופיה המקסימלית האפשרית.",
           math:["H(Class)=-\\big(\\tfrac12\\log\\tfrac12+\\tfrac12\\log\\tfrac12\\big)=1"]
         },
         {
@@ -849,7 +881,7 @@ window.SECTIONS.push({
         },
         {
           title:"(ד) דיוק העץ",
-          why:"מריצים את 6 התצפיות דרך העץ. שורה אחת (1,1,1 שהיא N) מסווגת בטעות כ-P. 5/6 נכונות.",
+          why:"מריצים את 6 התצפיות דרך העץ. שורה אחת (1,1,1 שהיא N) מסווגת בטעות בתור P. 5/6 נכונות.",
           math:["\\text{Accuracy}=\\frac{5}{6}=83\\%"],
           result:"דיוק = 83%"
         }
@@ -857,17 +889,17 @@ window.SECTIONS.push({
     },
     {
       num:"T·2", pts:null,
-      title:"KNN משוקלל-מאפיינים (Knesset) + Information Gain",
-      meta:"classify (1,0,1) · D=√((X−Y)M(X−Y)ᵀ) · M=diag(1,2,3) · IG multi-way",
-      tags:["Weighted-feature KNN","Mahalanobis-style","Entropy","Info Gain"],
+      title:"KNN עם משקלי מאפיינים (Knesset) + Information Gain",
+      meta:"classify (1,0,1) · D=√((X−Y)M(X−Y)ᵀ) · M=diag(1,2,3) · IG multi way",
+      tags:["Weighted feature KNN","Mahalanobis style","Entropy","Info Gain"],
       given:`חבר כנסת מסווג לפי 3 הצבעות → קואליציה (C) או אופוזיציה (O).
-        (א) סווג $(1,0,1)$ ב-KNN K=3 עם משקלי מאפיינים $v_1=1,v_2=2,v_3=3$.
+        (א) סווג $(1,0,1)$ באמצעות KNN עם K=3 ומשקלי מאפיינים $v_1=1,v_2=2,v_3=3$.
         (ב) אנטרופיה של Vote2, Vote3.
-        (ג) IG של Class בהינתן Vote3 (multi-way split).`,
+        (ג) IG של Class בהינתן Vote3 (multi way split).`,
       steps:[
         {
-          title:"(א) המרחק המשוקלל-מאפיינים",
-          why:"כל מאפיין מקבל משקל באלכסון M. מאפיין עם משקל גבוה תורם יותר למרחק — Vote3 (משקל 3) משפיע פי 3 מ-Vote1.",
+          title:"(א) המרחק עם משקלי מאפיינים",
+          why:"כל מאפיין מקבל משקל באלכסון M. מאפיין עם משקל גבוה תורם יותר למרחק, ולכן Vote3 (משקל 3) משפיע פי 3 מאשר Vote1.",
           math:["D(X,Y)=\\sqrt{(X-Y)\\,M\\,(X-Y)^T},\\quad M=\\operatorname{diag}(1,2,3)"]
         },
         {
@@ -884,7 +916,7 @@ window.SECTIONS.push({
         },
         {
           title:"(ב) אנטרופיה של Vote2 / Vote3",
-          why:"Vote2 מתפלג 1×0, 2×1, 1×2 (כלומר 1/4, 1/2, 1/4). אותה התפלגות ל-Vote3 → אותה אנטרופיה.",
+          why:"Vote2 מתפלג 1×0, 2×1, 1×2 (כלומר 1/4, 1/2, 1/4). אותה התפלגות עבור Vote3 → אותה אנטרופיה.",
           math:[
             "H(V2)=-\\big(\\tfrac14\\log\\tfrac14+\\tfrac12\\log\\tfrac12+\\tfrac14\\log\\tfrac14\\big)=1.5",
             "H(V2)=H(V3)"
@@ -892,7 +924,7 @@ window.SECTIONS.push({
         },
         {
           title:"(ג) IG של Class בהינתן Vote3",
-          why:"Vote3 מפצל multi-way לערכים 0/1/2. הקבוצות הטהורות (0→C, 2→O) תורמות אנטרופיה 0; רק ערך 1 מעורבב.",
+          why:"Vote3 מפצל multi way לערכים 0/1/2. הקבוצות הטהורות (0→C, 2→O) תורמות אנטרופיה 0; רק ערך 1 מעורבב.",
           math:[
             "H(Class)=1",
             "H_{V3}(Class)=\\tfrac14\\cdot0+\\tfrac12\\cdot1+\\tfrac14\\cdot0=\\tfrac12",
@@ -906,17 +938,17 @@ window.SECTIONS.push({
 });
 
 /* ============================================================
-   PRACTICE SET 4 — Gap-closing: formulas the course sheet has
+   PRACTICE SET 4: Gap closing formulas the course sheet has
    but the practice never tested (Cosine, SSE, Single/Average
-   link, Multi-way vs Binary split)
+   link, Multi way vs Binary split)
    ============================================================ */
 window.SECTIONS.push({
   id:"gaps",
   label:"השלמת חומר · נוסחאות שלא נבדקו",
-  blurb:"4 שאלות שמכסות בדיוק את מה שדף הנוסחאות כולל אך התרגול דילג עליו: דמיון קוסינוס · SSE · Single/Average link · Multi-way מול Binary split",
+  blurb:"4 שאלות שמכסות בדיוק את מה שדף הנוסחאות כולל אך התרגול דילג עליו: דמיון קוסינוס · SSE · Single/Average link · Multi way מול Binary split",
   problems:[
 
-    /* ---- GAP 1: Cosine similarity ---- */
+    /* GAP 1: Cosine similarity */
     {
       num:"G·1", pts:15,
       title:"דמיון קוסינוס בין שני משתמשים",
@@ -928,14 +960,14 @@ window.SECTIONS.push({
         <br>חשב את דמיון הקוסינוס ביניהם והסבר מה הוא אומר.`,
       steps:[
         {
-          title:"מהו דמיון קוסינוס — ולמה הוא שונה ממרחק",
-          why:"קוסינוס מודד את הזווית בין שני וקטורים, לא את הגודל שלהם. שני משתמשים עם אותו 'דפוס' התנהגות (יחס דומה בין הצירים) יהיו דומים — גם אם אחד פעיל הרבה יותר. זה בדיוק ההפך מ-L2 שמעניש על הבדל בגודל.",
+          title:"מהו דמיון קוסינוס ולמה הוא שונה ממרחק",
+          why:"קוסינוס מודד את הזווית בין שני וקטורים, לא את הגודל שלהם. שני משתמשים עם אותו 'דפוס' התנהגות (יחס דומה בין הצירים) יהיו דומים, גם אם אחד פעיל הרבה יותר. זה בדיוק ההפך לעומת L2 שמעניש על הבדל בגודל.",
           math:["\\cos(X,Y)=\\frac{X\\cdot Y}{\\lVert X\\rVert\\,\\lVert Y\\rVert}",
                 "X\\cdot Y=\\sum_i x_i y_i, \\quad \\lVert X\\rVert=\\sqrt{\\textstyle\\sum_i x_i^2}"]
         },
         {
-          title:"שלב 1 — מכפלה סקלרית X·Y",
-          why:"כופלים איבר-איבר וסוכמים. זה ה'מונה' של הנוסחה — מודד כמה הווקטורים מצביעים לאותו כיוון.",
+          title:"שלב 1: מכפלה סקלרית X·Y",
+          why:"כופלים איבר איבר וסוכמים. זה ה'מונה' של הנוסחה, והוא מודד כמה הווקטורים מצביעים לאותו כיוון.",
           calc:"g_cos",
           math:[
             "X\\cdot Y = 2\\cdot6 + 4.5\\cdot12.1 + 0.12\\cdot0.42 + 6\\cdot18",
@@ -943,32 +975,32 @@ window.SECTIONS.push({
           ]
         },
         {
-          title:"שלב 2 — הנורמות (אורכי הווקטורים)",
-          why:"כל נורמה היא האורך האוקלידי של הווקטור. הן ה'מכנה' שמנרמל — כך התוצאה תלויה רק בכיוון, לא בגודל.",
+          title:"שלב 2: הנורמות (אורכי הווקטורים)",
+          why:"כל נורמה היא האורך האוקלידי של הווקטור. הן ה'מכנה' שמנרמל, וכך התוצאה תלויה רק בכיוון ולא בגודל.",
           math:[
             "\\lVert X\\rVert=\\sqrt{2^2+4.5^2+0.12^2+6^2}=\\sqrt{60.27}=7.763",
             "\\lVert Y\\rVert=\\sqrt{6^2+12.1^2+0.42^2+18^2}=\\sqrt{506.59}=22.508"
           ]
         },
         {
-          title:"שלב 3 — חישוב והסבר",
-          why:"מחלקים. תוצאה קרובה ל-1 = זווית קרובה ל-0° = שני המשתמשים בעלי אותו דפוס שימוש כמעט בדיוק, רק בעוצמות שונות (Y פעיל פי כמה מ-X).",
+          title:"שלב 3: חישוב והסבר",
+          why:"מחלקים. תוצאה קרובה לערך 1 = זווית קרובה לערך 0° = שני המשתמשים בעלי אותו דפוס שימוש כמעט בדיוק, רק בעוצמות שונות (Y פעיל פי כמה לעומת X).",
           math:["\\cos(X,Y)=\\frac{174.5}{7.763\\cdot22.508}=0.9987"],
-          result:"cos ≈ 0.999 — דפוס שימוש כמעט זהה (זווית ~3°)"
+          result:"cos ≈ 0.999 · דפוס שימוש כמעט זהה (זווית ~3°)"
         }
       ]
     },
 
-    /* ---- GAP 2: SSE ---- */
+    /* GAP 2: SSE */
     {
       num:"G·2", pts:15,
       title:"חישוב SSE לאשכולות",
       meta:"Sum of Squared Error · centroid · cluster cohesion",
       tags:["SSE","Clustering","Centroid"],
       given:`הנוסחה <span dir="ltr">$SSE=\\sum_{i=1}^{k}\\sum_{x\\in C_i}(c_i-x)^2$</span> מופיעה בדף אך לא חושבה.
-        נתונים שני אשכולות בדו-ממד:
+        נתונים שני אשכולות בדו ממד:
         <br>$C_1=\\{(2,4),(4,6)\\}$ ,  $C_2=\\{(10,2),(12,4)\\}$.
-        <br>חשב את ה-SSE הכולל.`,
+        <br>חשב את SSE הכולל.`,
       steps:[
         {
           title:"מה SSE מודד",
@@ -976,7 +1008,7 @@ window.SECTIONS.push({
           math:["SSE=\\sum_{i=1}^{k}\\sum_{x\\in C_i}\\lVert c_i-x\\rVert^2"]
         },
         {
-          title:"שלב 1 — מרכזי האשכולות (centroids)",
+          title:"שלב 1: מרכזי האשכולות (centroids)",
           why:"המרכז הוא הממוצע של נקודות האשכול. הוא הנקודה שממנה מודדים את הפיזור.",
           math:[
             "c_1=\\Big(\\tfrac{2+4}{2},\\tfrac{4+6}{2}\\Big)=(3,5)",
@@ -984,7 +1016,7 @@ window.SECTIONS.push({
           ]
         },
         {
-          title:"שלב 2 — סכום ריבועי המרחקים בכל אשכול",
+          title:"שלב 2: סכום ריבועי המרחקים בכל אשכול",
           why:"לכל נקודה: מרחק לריבוע מהמרכז (סוכמים גם על ציר x וגם y). מסכמים בתוך כל אשכול.",
           calc:"g_sse",
           math:[
@@ -993,7 +1025,7 @@ window.SECTIONS.push({
           ]
         },
         {
-          title:"שלב 3 — SSE כולל",
+          title:"שלב 3: SSE כולל",
           why:"מחברים את התרומה של כל האשכולות. זה מספר אחד שמתאר את איכות החלוקה כולה.",
           math:["SSE = 4 + 4 = 8"],
           result:"SSE כולל = 8"
@@ -1001,48 +1033,48 @@ window.SECTIONS.push({
       ]
     },
 
-    /* ---- GAP 3: Single & Average link ---- */
+    /* GAP 3: Single and Average link */
     {
       num:"G·3", pts:20,
-      title:"Single link ו-Average link — על אותה מטריצה",
-      meta:"single link (min) · average link (avg) · contrast with complete-link",
+      title:"Single link ו Average link על אותה מטריצה",
+      meta:"single link (min) · average link (avg) · contrast with complete link",
       tags:["Single link","Average link","Hierarchical","Linkage"],
-      given:`במבחן (שאלה 2) השתמשנו ב-<b>complete-link</b> בלבד. כאן נחזור על אותה מטריצת מרחקים
-        $L_1$ (שורות 1–5) ונבצע <b>single link</b> ו-<b>average link</b>, כדי לראות את ההבדל.`,
+      given:`במבחן (שאלה 2) השתמשנו בחיבור <b>complete link</b> בלבד. כאן נחזור על אותה מטריצת מרחקים
+        $L_1$ (שורות 1 עד 5) ונבצע <b>single link</b> וגם <b>average link</b>, כדי לראות את ההבדל.`,
       steps:[
         {
-          title:"שלוש שיטות החיבור — התזכורת מדף הנוסחאות",
-          why:"כל שיטה מגדירה אחרת את 'המרחק בין שני אשכולות': single לוקח את הזוג הקרוב ביותר, complete את הרחוק ביותר, ו-average את הממוצע. אותה מטריצה יכולה לתת תהליך מיזוג שונה.",
+          title:"שלוש שיטות החיבור מתוך דף הנוסחאות",
+          why:"כל שיטה מגדירה אחרת את 'המרחק בין שני אשכולות': single לוקח את הזוג הקרוב ביותר, complete את הרחוק ביותר, ו average את הממוצע. אותה מטריצה יכולה לתת תהליך מיזוג שונה.",
           math:[
             "\\text{Single: } d(C_i,C_j)=\\min\\{d(x_i,x_j)\\}",
             "\\text{Complete: } d(C_i,C_j)=\\max\\{d(x_i,x_j)\\}",
             "\\text{Average: } d(C_i,C_j)=\\operatorname{avg}\\{d(x_i,x_j)\\}"
           ],
           table:{dir:"ltr",head:["","1","2","3","4","5"],rows:[
-            ["1","–","","","",""],["2","3.7","–","","",""],
-            ["3","9.6","9.9","–","",""],["4","9.9","6.2","3.7","–",""],
-            ["5","3.3","3.6","6.3","6.6","–"]
+            ["1","0","","","",""],["2","3.7","0","","",""],
+            ["3","9.6","9.9","0","",""],["4","9.9","6.2","3.7","0",""],
+            ["5","3.3","3.6","6.3","6.6","0"]
           ]}
         },
         {
-          title:"Single link — שלב המיזוג הראשון",
-          why:"המרחק הקטן ביותר בכל המטריצה הוא 3.3 (בין 1 ל-5), אז מתחילים בדיוק כמו ב-complete. ההבדל יתחיל בשלב הבא.",
+          title:"Single link: שלב המיזוג הראשון",
+          why:"המרחק הקטן ביותר בכל המטריצה הוא 3.3 (בין 1 ל 5), אז מתחילים בדיוק כמו ב complete. ההבדל יתחיל בשלב הבא.",
           math:["\\min = 3.3 \\Rightarrow \\text{merge } \\{1,5\\}"]
         },
         {
-          title:"Single link — המרחק מ-{1,5} לשאר (min)",
-          why:"ב-single לוקחים לכל אשכול אחר את המרחק הקטן מבין שני האיברים. שים לב: 3.6 (ולא 3.7 כמו ב-complete) — וזה משנה את הסדר.",
+          title:"Single link: המרחק מהאשכול {1,5} לשאר (min)",
+          why:"ב single לוקחים לכל אשכול אחר את המרחק הקטן מבין שני האיברים. שים לב: 3.6 (ולא 3.7 כמו ב complete), וזה משנה את הסדר.",
           calc:"g_link",
           math:[
             "d(\\{1,5\\},2)=\\min(3.7,3.6)=3.6",
             "d(\\{1,5\\},3)=\\min(9.6,6.3)=6.3",
             "d(\\{1,5\\},4)=\\min(9.9,6.6)=6.6"
           ],
-          html:`עכשיו הקטן ביותר הוא 3.6 → מצרפים 2 לאשכול ⟶ <span dir="ltr">{1,2,5}</span>, ואז {3,4} ב-3.7.`
+          html:`עכשיו הקטן ביותר הוא 3.6 → מצרפים 2 לאשכול ⟶ <span dir="ltr">{1,2,5}</span>, ואז {3,4} במרחק 3.7.`
         },
         {
-          title:"Average link — אותו שלב, ממוצע במקום מינימום",
-          why:"ב-average ממצעים את שני המרחקים. הערכים יוצאים גבוהים יותר (3.65 במקום 3.6), אבל הסדר היחסי נשמר ⟶ אותה תוצאה סופית.",
+          title:"Average link: אותו שלב, ממוצע במקום מינימום",
+          why:"ב average ממצעים את שני המרחקים. הערכים יוצאים גבוהים יותר (3.65 במקום 3.6), אבל הסדר היחסי נשמר ⟶ אותה תוצאה סופית.",
           math:[
             "d(\\{1,5\\},2)=\\tfrac{3.7+3.6}{2}=3.65",
             "d(\\{1,5\\},3)=\\tfrac{9.6+6.3}{2}=7.95",
@@ -1050,48 +1082,48 @@ window.SECTIONS.push({
           ]
         },
         {
-          title:"המסקנה — אותם אשכולות, מרחקי מיזוג שונים",
-          why:"זו הנקודה שהמרצה אוהב לבדוק: כל שלוש השיטות נותנות כאן {1,2,5} ו-{3,4}, אבל גובה המיזוג שונה (single 3.6, average 3.65, complete 3.7). על נתונים אחרים זה היה יכול לשנות גם את החלוקה עצמה.",
-          result:"כל השיטות → {1,2,5} ו-{3,4} · אך מרחקי מיזוג: 3.6 / 3.65 / 3.7"
+          title:"המסקנה: אותם אשכולות, מרחקי מיזוג שונים",
+          why:"זו הנקודה שהמרצה אוהב לבדוק: כל שלוש השיטות נותנות כאן {1,2,5} וגם {3,4}, אבל גובה המיזוג שונה (single 3.6, average 3.65, complete 3.7). על נתונים אחרים זה היה יכול לשנות גם את החלוקה עצמה.",
+          result:"כל השיטות → {1,2,5} וגם {3,4} · מרחקי מיזוג: 3.6 / 3.65 / 3.7"
         }
       ]
     },
 
-    /* ---- GAP 4: Multi-way vs Binary split ---- */
+    /* GAP 4: Multi way vs Binary split */
     {
       num:"G·4", pts:15,
-      title:"Multi-way split מול Binary split",
+      title:"Multi way split מול Binary split",
       meta:"conceptual · categorical vs numeric splits · tree shape",
-      tags:["Decision tree","Multi-way split","Binary split","Concept"],
-      given:`דף הנוסחאות מציג את הדיאגרמה של <b>Marital status</b> בשתי צורות פיצול — אך השאלה הזו
+      tags:["Decision tree","Multi way split","Binary split","Concept"],
+      given:`דף הנוסחאות מציג את הדיאגרמה של <b>Marital status</b> בשתי צורות פיצול, אך השאלה הזו
         מעולם לא נשאלה ישירות. הסבר את ההבדל, מתי משתמשים בכל אחת, ותן דוגמה מנתוני המבחן.`,
       steps:[
         {
-          title:"Multi-way split — מה זה",
-          why:"בפיצול multi-way כל ערך קטגוריאלי מקבל ענף משלו. מתאים למשתנה קטגוריאלי עם מספר קטן של ערכים, כי הוא חושף מיד את כל הקבוצות.",
+          title:"Multi way split: מה זה",
+          why:"בפיצול multi way כל ערך קטגוריאלי מקבל ענף משלו. מתאים למשתנה קטגוריאלי עם מספר קטן של ערכים, כי הוא חושף מיד את כל הקבוצות.",
           html:`<div style="text-align:center;direction:ltr;font-family:var(--mono);font-size:13px;line-height:1.8">
             [ Marital status ]<br>↙ &nbsp; ↓ &nbsp; ↘<br>Single&nbsp; Married&nbsp; Divorced</div>`,
           math:["\\text{ענף לכל קטגוריה: } |values|\\text{ ענפים}"]
         },
         {
-          title:"Binary split — מה זה",
+          title:"Binary split: מה זה",
           why:"בפיצול binary תמיד שני ענפים בלבד: 'שייך לקבוצה' מול 'לא'. הכרחי למשתנים נומריים (סף כמו ≤7.98) וגם אופציה לקטגוריאליים (קיבוץ ערכים).",
           html:`<div style="text-align:center;direction:ltr;font-family:var(--mono);font-size:13px;line-height:1.8">
             [ Marital status ]<br>↙ &nbsp;&nbsp;&nbsp; ↘<br>{Single}&nbsp; {Married, Divorced}</div>`,
           math:["\\text{תמיד 2 ענפים: } \\{A\\}\\ \\text{vs}\\ \\{\\text{rest}\\}"]
         },
         {
-          title:"מתי כל אחד — והקשר למבחן",
-          why:"זה בדיוק מה שעשינו בשאלה 3: Device (קטגוריאלי) פוצל multi-way ל-Mobile/Desktop, ואילו Time (נומרי) פוצל binary סביב הממוצע 7.98. אי אפשר multi-way על משתנה רציף — יהיו אינסוף ערכים.",
+          title:"מתי כל אחד והקשר למבחן",
+          why:"זה בדיוק מה שעשינו בשאלה 3: Device (קטגוריאלי) פוצל multi way לערכים Mobile ו Desktop, ואילו Time (נומרי) פוצל binary סביב הממוצע 7.98. אי אפשר multi way על משתנה רציף, כי יהיו אינסוף ערכים.",
           table:{dir:"ltr",head:["Split type","Variable","Branches","דוגמה במבחן"],rows:[
-            ["Multi-way","Categorical","one per value","Device → Mobile / Desktop"],
+            ["Multi way","Categorical","one per value","Device → Mobile / Desktop"],
             ["Binary","Numeric","2 (threshold)","Time → ≤7.98 / >7.98"]
           ]}
         },
         {
           title:"היתרון/חיסרון של כל גישה",
-          why:"Multi-way קצר וקריא אך עלול לפצל יתר על המידה (קבוצות קטנות, overfitting). Binary יוצר עצים עמוקים יותר אך גמיש ועקבי — לכן CART עובד תמיד binary.",
-          result:"קטגוריאלי קטן → multi-way · נומרי או קיבוץ → binary"
+          why:"Multi way קצר וקריא אך עלול לפצל יתר על המידה (קבוצות קטנות, overfitting). Binary יוצר עצים עמוקים יותר אך גמיש ועקבי, ולכן CART עובד תמיד binary.",
+          result:"קטגוריאלי קטן → multi way · נומרי או קיבוץ → binary"
         }
       ]
     }
@@ -1150,7 +1182,7 @@ function buildTable(t){
       const td=document.createElement('td');
       td.textContent=c;
       // highlight result-ish columns
-      if(t.head[i]&&/PC|w|d|norm|D\(/.test(t.head[i])&&c!=="–"&&c!=="")td.classList.add('hl');
+      if(t.head[i]&&/PC|w|d|norm|D\(/.test(t.head[i])&&c!=="0"&&c!=="")td.classList.add('hl');
       tr.appendChild(td);
     });
     tb.appendChild(tr);
@@ -1317,7 +1349,7 @@ function buildCalc(key){
   switch(key){
 
   case 'q1_linf':
-    return calcShell('מחשבון L∞ — מרחק מהשאילתה (1, 0)',[
+    return calcShell('מחשבון L∞: מרחק מהשאילתה (1, 0)',[
       {k:'s',label:'Sessions (norm)',def:'0.2'},
       {k:'a',label:'ActiveDays (norm)',def:'0.125'}
     ],v=>{
@@ -1326,8 +1358,8 @@ function buildCalc(key){
     });
 
   case 'q2_l1':
-    return calcShell('מחשבון L1 בין שתי שורות (one-hot + Time)',[
-      {k:'cat',label:'מאפיינים שונים (0–4)',def:'2'},
+    return calcShell('מחשבון L1 בין שתי שורות (one hot + Time)',[
+      {k:'cat',label:'מאפיינים שונים (0 עד 4)',def:'2'},
       {k:'t1',label:'Time A',def:'4.5'},
       {k:'t2',label:'Time B',def:'6.2'}
     ],v=>{
@@ -1336,7 +1368,7 @@ function buildCalc(key){
     });
 
   case 'q2_mahal':
-    return calcShell('מרחק משוקלל-מאפיינים √((X−Y)M(X−Y)ᵀ)',[
+    return calcShell('מרחק עם משקלי מאפיינים √((X−Y)M(X−Y)ᵀ)',[
       {k:'free',label:'Δ TypeFree',def:'0'},
       {k:'desk',label:'Δ DeviceDesktop',def:'0'},
       {k:'time',label:'Δ Time',def:'7.1'}
@@ -1356,7 +1388,7 @@ function buildCalc(key){
     });
 
   case 'q4_weight':
-    return calcShell('בדיקת מונוטוניות — w = 2^(−d)',[
+    return calcShell('בדיקת מונוטוניות: w = 2^(−d)',[
       {k:'di',label:'dᵢ (קרוב)',def:'1'},
       {k:'dj',label:'dⱼ (רחוק)',def:'3'}
     ],v=>{
@@ -1474,7 +1506,7 @@ function buildCalc(key){
     });
 
   case 'g_link':
-    return calcShell('Single מול Average מ-{1,5} לאשכול אחר',[
+    return calcShell('Single מול Average מהאשכול {1,5} לאשכול אחר',[
       {k:'d1',label:'d(1,·)',def:'3.7'},
       {k:'d5',label:'d(5,·)',def:'3.6'}
     ],v=>{

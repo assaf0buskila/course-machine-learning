@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>פתרון ערכים עצמיים — חזותי</title>
+<title>פתרון ערכים עצמיים | חזותי</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
@@ -113,7 +113,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:26px}
   <div class="head">
     <div class="eye">Eigenvalues · step by step</div>
     <h1>פתרון הערכים העצמיים</h1>
-    <p>מטריצת השונות מ-PCA — מהמטריצה עד אחוז השונות, בכל צעד</p>
+    <p>מטריצת השונות של PCA, מהמטריצה עד אחוז השונות, בכל צעד</p>
   </div>
 
   <div class="matrix-hero">
@@ -156,12 +156,12 @@ const steps=[
   tag:"המשוואה האופיינית",
   h:"מציבים λ על האלכסון ומחפשים דטרמיננטה אפס",
   body:()=>`
-    <div class="explain"><b>הרעיון:</b> ערך עצמי הוא λ שעבורו המטריצה <span dir="ltr">$COV-\\lambda I$</span> "מאבדת ממד" — כלומר הדטרמיננטה שלה מתאפסת. מחסירים λ מכל איבר באלכסון.</div>
+    <div class="explain"><b>הרעיון:</b> ערך עצמי הוא λ שעבורו המטריצה <span dir="ltr">$COV-\\lambda I$</span> "מאבדת ממד", כלומר הדטרמיננטה שלה מתאפסת. מחסירים λ מכל איבר באלכסון.</div>
     <div class="math-disp">${K("|COV-\\lambda I| = \\begin{vmatrix}2-\\lambda&-1&0\\\\-1&2-\\lambda&-1\\\\0&-1&2-\\lambda\\end{vmatrix}=0")}</div>`
 },
 {
   tag:"פיתוח לפי השורה הראשונה",
-  h:"שני מינורים — האמצעי מתאפס כי האיבר הוא 0",
+  h:"שני מינורים, והשלישי מתאפס כי האיבר הוא 0",
   body:()=>`
     <div class="explain"><b>למה זה מתקצר:</b> מרחיבים לפי השורה העליונה <span dir="ltr">$[\\,2{-}\\lambda,\\ -1,\\ 0\\,]$</span>. האיבר השלישי הוא 0, אז נשארים רק עם שני מינורים.</div>
     <div class="cofa">
@@ -172,9 +172,9 @@ const steps=[
 },
 {
   tag:"הוצאת גורם משותף",
-  h:"לכל האיברים יש (2−λ) — מוציאים אותו החוצה",
+  h:"לכל האיברים יש (2−λ), לכן מוציאים אותו החוצה",
   body:()=>`
-    <div class="explain"><b>הצעד המפתח:</b> שני האיברים מתחלקים ב-<span dir="ltr">$(2-\\lambda)$</span>. מוציאים גורם משותף ומקבלים מכפלה של שני גורמים — וזה מה שפותר את המשוואה.</div>
+    <div class="explain"><b>הצעד המפתח:</b> שני האיברים מתחלקים בביטוי <span dir="ltr">$(2-\\lambda)$</span>. מוציאים גורם משותף ומקבלים מכפלה של שני גורמים, וזה מה שפותר את המשוואה.</div>
     <div class="math-disp">${K("(2-\\lambda)\\big[(2-\\lambda)^2-1-1\\big]=0")}</div>
     <div class="math-disp">${K("(2-\\lambda)\\big[(2-\\lambda)^2-2\\big]=0")}</div>`
 },
@@ -184,12 +184,12 @@ const steps=[
   body:()=>`
     <div class="split">
       <div class="factor solved">
-        <div class="ftitle">גורם 1 — הקל</div>
+        <div class="ftitle">גורם 1, הקל</div>
         ${K("2-\\lambda=0",false)}
         <div><span class="lam">λ₂ = 2</span></div>
       </div>
       <div class="factor">
-        <div class="ftitle">גורם 2 — ריבועי</div>
+        <div class="ftitle">גורם 2, ריבועי</div>
         ${K("(2-\\lambda)^2-2=0",false)}
         <div style="font-size:12px;color:var(--muted);margin-top:6px">נפתח בצעד הבא →</div>
       </div>
@@ -205,13 +205,13 @@ const steps=[
       <div class="factor solved"><div class="ftitle">החיובי</div><span class="lam">λ₁ = 2+√2 ≈ 3.414</span></div>
       <div class="factor solved"><div class="ftitle">השלילי</div><span class="lam">λ₃ = 2−√2 ≈ 0.586</span></div>
     </div>
-    <div class="explain" style="border-color:var(--muted)"><b>בדיקה:</b> בלוח הפתרונות כתוב <span dir="ltr">$(2-\\lambda)(\\lambda^2-4\\lambda+2)=0$</span> — זה בדיוק <span dir="ltr">$(2-\\lambda)^2-2$</span> בצורה פתוחה. הנוסחה הריבועית נותנת <span dir="ltr">$\\lambda=\\frac{4\\pm\\sqrt{8}}{2}=2\\pm\\sqrt2$</span>, אותם שורשים.</div>`
+    <div class="explain" style="border-color:var(--muted)"><b>בדיקה:</b> בלוח הפתרונות כתוב <span dir="ltr">$(2-\\lambda)(\\lambda^2-4\\lambda+2)=0$</span>. זה בדיוק <span dir="ltr">$(2-\\lambda)^2-2$</span> בצורה פתוחה. הנוסחה הריבועית נותנת <span dir="ltr">$\\lambda=\\frac{4\\pm\\sqrt{8}}{2}=2\\pm\\sqrt2$</span>, אותם שורשים.</div>`
 },
 {
   tag:"אחוז השונות",
   h:"כל ערך עצמי = שונות בכיוון שלו",
   body:()=>`
-    <div class="explain"><b>המשמעות:</b> כל λ מודד כמה "מידע" (שונות) יש בכיוון הראשי שלו. אחוז השונות הנשמר בממד = λ חלקי סכום כל ה-λ. הסכום כאן הוא 6.</div>
+    <div class="explain"><b>המשמעות:</b> כל λ מודד כמה "מידע" (שונות) יש בכיוון הראשי שלו. אחוז השונות הנשמר בממד = λ חלקי סכום כל ערכי λ. הסכום כאן הוא 6.</div>
     <div class="bars" id="bars">
       <div class="barrow"><div class="barlbl">λ₁ 3.414</div><div class="bartrack"><div class="barfill b-main" data-w="56.9">56.9%</div></div></div>
       <div class="barrow"><div class="barlbl">λ₂ 2.0</div><div class="bartrack"><div class="barfill b-2" data-w="33.3">33.3%</div></div></div>
@@ -239,6 +239,17 @@ function draw(){
     <h2>${s.h}</h2>
     ${s.body()}
   </div>`;
+  if(window.renderMathInElement){
+    renderMathInElement(stage,{
+      delimiters:[
+        {left:"$$",right:"$$",display:true},
+        {left:"$",right:"$",display:false},
+        {left:"\\(",right:"\\)",display:false},
+        {left:"\\[",right:"\\]",display:true}
+      ],
+      throwOnError:false
+    });
+  }
   [...dotsEl.children].forEach((d,k)=>d.classList.toggle('on',k===i));
   document.getElementById('prev').disabled=(i===0);
   document.getElementById('next').disabled=(i===steps.length-1);
