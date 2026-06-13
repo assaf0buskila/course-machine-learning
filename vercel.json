@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/ml-exam-dashboard.html"
+    }
+  ]
+}
